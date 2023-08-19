@@ -6,7 +6,7 @@ import NavigationContainer from "@react-navigation/native";
 export default function App() {
   return <MyTab />;
 }
-
+ 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
