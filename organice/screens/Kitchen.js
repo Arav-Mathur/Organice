@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 import {
   Text,
   View,
@@ -17,7 +17,7 @@ import MyTab from "../navigation/BottomTabNavigator"
 
 var myitem = new Items();
 
-export default class Kitchen extends React.Component {
+export default class Kitchen extends Component {
   constructor() {
     super();
     this.state = {

@@ -2,7 +2,7 @@ import React from 'react';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import Kitchen from '../screens/Kitchen';
 import Inventory from '../screens/Inventory';
-
+import ShoppingList from '../screens/ShoppingList';
 const Tab = createMaterialBottomTabNavigator();
 
 const MyTab = () => {
@@ -13,7 +13,7 @@ const MyTab = () => {
       inactiveColor="#014f00"
       barStyle={{ backgroundColor: '#8fb913' }}>
       <Tab.Screen name="Kitchen" component={Inventory} />
-      {/* Add more Tab.Screen components if needed */}
+      <Tab.Screen name="Shopping List" component={ShoppingList}/>
     </Tab.Navigator>
   );
 };
