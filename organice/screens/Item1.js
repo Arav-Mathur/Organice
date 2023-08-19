@@ -62,5 +62,4 @@ class Item {
             });
     }
 }
-
-export default new Items();
+export default new Item()

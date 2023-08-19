@@ -11,9 +11,9 @@ import {
 } from 'react-native';
 import Constants from 'expo-constants';
 import { ListItem } from '@rneui/themed';
-import Items from './Items'; // Import the Items class
+import Item from "./Item1"; // Import the Item class
 
-class Inventory extends Component {
+export default class Inventory extends Component {
   constructor() {
     super();
     this.state = {
@@ -33,7 +33,7 @@ class Inventory extends Component {
   }
 
   refreshItemsList = () => {
-    Items.getAllItems((allItems) => {
+    Item.getAllItems((allItems) => {
       this.setState({ allItems });
     });
   };
@@ -182,15 +182,96 @@ class Inventory extends Component {
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    paddingTop: Constants.statusBarHeight,
-    backgroundColor: '#ecf0f1',
-    padding: 8,
-  },
-  // Your other styles
-});
 
-export default Kitchen;
+const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      justifyContent: "center",
+      paddingTop: Constants.statusBarHeight,
+      backgroundColor: "#ecf0f1",
+      padding: 8,
+    },
+    modalContainer: {
+      flex: 1,
+      borderRadius: 20,
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: "#ffff",
+      marginRight: 30,
+      marginLeft: 30,
+      marginTop: 80,
+      marginBottom: 80,
+    },
+    formTextInput: {
+      width: "75%",
+      height: 35,
+      alignSelf: "center",
+      borderColor: "#014f00",
+      borderRadius: 10,
+      borderWidth: 2,
+      marginTop: 20,
+      padding: 10,
+    },
+    registerButton: {
+      width: "75%",
+      height: 35,
+      alignSelf: "center",
+      backgroundColor: "#8fb913",
+      justifyContent: "center",
+      borderRadius: 10,
+      marginTop: 20,
+      padding: 10,
+      shadowColor: "#014f00",
+      shadowOffset: {
+        width: 0,
+        height: 8,
+      },
+    },
+    registerButtonText: {
+      fontSize: 15,
+      fontWeight: "bold",
+      color: "white",
+      alignSelf: "center",
+      alignItems: "center",
+      marginTop: 2,
+    },
+    cancelButton: {
+      width: "75%",
+      height: 35,
+      alignSelf: "center",
+      backgroundColor: "#8388A4",
+      justifyContent: "center",
+      borderRadius: 10,
+      marginTop: 20,
+      padding: 10,
+      shadowColor: "#014f00",
+      shadowOffset: {
+        width: 0,
+        height: 8,
+      },
+    },
+    cancelButtonText: {
+      fontSize: 15,
+      fontWeight: "bold",
+      color: "white",
+      alignSelf: "center",
+      alignItems: "center",
+      color: "#474B64",
+    },
+    deleteButton: {
+      width: "75%",
+      height: 35,
+      alignSelf: "center",
+      backgroundColor: "#ff5722",
+      justifyContent: "center",
+      borderRadius: 10,
+      marginTop: 20,
+      padding: 10,
+      shadowColor: "#014f00",
+      shadowOffset: {
+        width: 0,
+        height: 8,
+      },
+    },
+  });
+  
