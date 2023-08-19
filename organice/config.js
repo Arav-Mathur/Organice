@@ -1,5 +1,5 @@
 // Import the functions you need from the SDKs you need
-import firebase from 'firebase';
+import firebase from "firebase";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -11,10 +11,10 @@ const firebaseConfig = {
   projectId: "organice-9e1bc",
   storageBucket: "organice-9e1bc.appspot.com",
   messagingSenderId: "200913348373",
-  appId: "1:200913348373:web:28a6d56b4af72d6962eb1c"
+  appId: "1:200913348373:web:28a6d56b4af72d6962eb1c",
 };
 
 // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
+firebase.initializeApp(firebaseConfig);
 
-  export default firebase.firestore();
+export default firebase.firestore();
