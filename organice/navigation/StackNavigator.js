@@ -4,6 +4,7 @@ import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import LoginScreen from '../screens/LoginScreen';
 import {MyTab} from "./BottomTabNavigator"
+import Kitchen from '../screens/Kitchen';
 const Stack = createStackNavigator();
 
 function MyStack() {
@@ -11,7 +12,7 @@ function MyStack() {
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Login" >
         <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="My Inventory" component={MyTab} />
+        <Stack.Screen name="My Inventory" component={Kitchen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
