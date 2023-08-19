@@ -1,17 +1,19 @@
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import * as React from "react";
-import { NavigationContainer } from "@react-navigation/native";
-import MyTab from "./BottomTabNavigator";
-//import AddItem from "../screens/AddItem"
-
-const Stack = createNativeStackNavigator();
+// Make sure your import statements are accurate
+import { createStackNavigator } from '@react-navigation/stack';
+import * as React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import LoginScreen from '../screens/LoginScreen';
+import {MyTab} from "./BottomTabNavigator"
+const Stack = createStackNavigator();
 
 function MyStack() {
   return (
-    <Stack.Navigator>
-      initialRouteName="MyTab"
-      <Stack.Screen name="MyTab" component={MyTab} />
-      // <Stack.Screen name="AddItem" component={AddItem} />
-    </Stack.Navigator>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Login" >
+        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="My Inventory" component={MyTab} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
+export default MyStack;
