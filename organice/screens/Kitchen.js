@@ -13,6 +13,7 @@ import Constants from "expo-constants";
 import { ListItem } from "@rneui/themed";
 import db from "../config";
 import Items from "./Items";
+import MyTab from "../navigation/BottomTabNavigator"
 
 var myitem = new Items();
 
@@ -34,6 +35,7 @@ export default class Kitchen extends React.Component {
 
   componentDidMount() {
     myitem.getAllItems(this);
+    MyTab();
   }
 
   render() {

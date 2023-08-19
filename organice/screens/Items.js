@@ -13,7 +13,7 @@ import Constants from "expo-constants";
 import { ListItem } from "@rneui/themed";
 import db from "../config";
 
-export default class Items extends React.Component {
+class Items extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -149,6 +149,8 @@ export default class Items extends React.Component {
     );
   };
 }
+export default new Items();
+
 const styles = StyleSheet.create({
   button: {
     width: 100,

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { View, Button, StyleSheet ,Alert} from 'react-native';
 import t from 'tcomb-form-native';
-import MyTab from "../navigation/BottomTabNavigator";
 
 import * as firebase from 'firebase'; // Make sure this import is added
 
