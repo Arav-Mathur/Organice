@@ -22,27 +22,44 @@ class Items extends React.Component {
       isModalVisible: false,
     };
   }
-  getAllItems = () => {
-    console.log('Getitems');
-    db.collection('Items')
-      .get()
-      .then((snapshot) => {
-        // var all = snapshot.docs.map((doc) => {
-        //   return { ...doc.data(), docId: doc.id }; // Include the document ID in the data object
-        // });
-        // this.setState({ allItems: all });
-        this.setState({
-          allItems: snapshot.docs.map((doc) => ({ ...doc.data(), docId: doc.id })),
-        }, () => {
-          console.log('allItems inside setState callback:', this.state.allItems);
-        });
-        console.log('allItems before setState:', this.state.allItems);
-      })
-      .catch((error) => {
-        console.error('Error fetching data:', error);
-      });
+  // getAllItems = () => {
+  //   console.log('Getitems');
+  //   db.collection('Items')
+  //     .get()
+  //     .then((snapshot) => {
+  //       // var all = snapshot.docs.map((doc) => {
+  //       //   return { ...doc.data(), docId: doc.id }; // Include the document ID in the data object
+  //       // });
+  //       // this.setState({ allItems: all });
+  //       this.setState({
+  //         allItems: snapshot.docs.map((doc) => ({ ...doc.data(), docId: doc.id })),
+  //       }, () => {
+  //         console.log('allItems inside setState callback:', this.state.allItems);
+  //       });
+  //       console.log('allItems before setState:', this.state.allItems);
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error fetching data:', error);
+  //     });
+  // };
+  static getAllItems = async () => {
+    try {
+      const snapshot = await db.collection('Items').get();
+      return snapshot.docs.map((doc) => ({ ...doc.data(), docId: doc.id }));
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      return [];
+    }
   };
-
+  componentDidMount() {
+    this.loadItems();
+  }
+  
+  loadItems = async () => {
+    const allItems = await Items.getAllItems();
+    this.setState({ allItems });
+  };
+  
   updateItems = (docId,name,qty,location,measure) => {
     // const { name, qty, measure, location, docId } = this.loc.state;
     // Update the item with the given docId
