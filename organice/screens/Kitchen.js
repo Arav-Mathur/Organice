@@ -215,6 +215,7 @@ export default class Kitchen extends Component {
           <TouchableOpacity
             onPress={() => {
               Items.showModal(), this.setState({ isDeleteVisible: false });
+              console.log("button pressed")
             }}>
             <Text>+</Text>
           </TouchableOpacity>
@@ -327,6 +328,6 @@ const styles = StyleSheet.create({
     },
   },
   GoBackButton: {
-    
+
   },
 });
