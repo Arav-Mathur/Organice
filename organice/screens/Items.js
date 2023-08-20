@@ -41,7 +41,7 @@ class Items extends React.Component {
   //     .catch((error) => {
   //       console.error('Error fetching data:', error);
   //     });
-  // };
+  // }; 
   static getAllItems = async () => {
     try {
       const snapshot = await db.collection('Items').get();
