@@ -32,13 +32,11 @@ class Items extends React.Component {
         // });
         // this.setState({ allItems: all });
         this.setState({
-          allItems: snapshot.docs.map((doc) => {
-            return { ...doc.data(), docId: doc.id };
-          }),
+          allItems: snapshot.docs.map((doc) => ({ ...doc.data(), docId: doc.id })),
+        }, () => {
+          console.log('allItems inside setState callback:', this.state.allItems);
         });
-
-        // console.log(snapshot.docs.map((doc) => ({ ...doc.data(), docId: doc.id })));
-        // console.log(this.state.allItems);
+        console.log('allItems before setState:', this.state.allItems);
       })
       .catch((error) => {
         console.error('Error fetching data:', error);

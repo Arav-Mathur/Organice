@@ -94,8 +94,12 @@ export default class LoginScreen extends Component {
           options={options} // Pass the options to the Form
         />
 
-        <Button title="Login" onPress={this.handleLogin} />
-        <Button title="Sign Up" onPress={this.handleSignUp} />
+        <TouchableOpacity  style={styles.loginButton} onPress={this.handleLogin} >
+            <Text style={styles.buttonText}>Login</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={this.handleSignUp} style={styles.signUpButton} >
+            <Text style={styles.buttonText}>Sign Up</Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -114,4 +118,36 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     paddingHorizontal: 10,
   },
-});
+  loginButton: {
+    width: 352.5,
+    height: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#8fb913',
+    shadowColor: '#014f00',
+    shadowOffset: {
+      width: 0,
+      height: 8,
+  },
+  },
+  signUpButton: {
+    width: 352.5,
+    height: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 10,
+    backgroundColor: '#8fb913',
+    shadowColor: '#014f00',
+    shadowOffset: {
+      width: 0,
+      height: 8,
+  },
+  },
+  buttonText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: 'white',
+    alignSelf: 'center',
+    alignItems: 'center',
+  }
+  });

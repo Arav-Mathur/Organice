@@ -118,7 +118,8 @@ export default class Kitchen extends Component {
                         this.state.location,
                         this.state.measure
                       ); // Update existing item
-                      console.log('view');
+                      this.clearItems()
+                      console.log(Items.state.allItems);
                     } else {
                       Items.addItems(
                         this.state.name,
@@ -126,11 +127,12 @@ export default class Kitchen extends Component {
                         this.state.location,
                         this.state.measure
                       ); // Add new item
+                      this.clearItems()
                       console.log('additem');
+                      console.log(Items.state.allItems);
                     }
                     this.setState({ isModalVisible: false });
-                    this.clearItems();
-                    Items.getAllItems();
+                    //this.clearItems();
                     console.log('submit');
                   } else {
                     alert('All Fields Must Be Inputed');
@@ -161,7 +163,6 @@ export default class Kitchen extends Component {
                 <Text style={{ color: 'white' }}>Delete</Text>
               </TouchableOpacity>
               <TouchableOpacity 
-                style={styles.GoBackButton}
                 onPress={() => {
                   navigation.navigate('AddLocations', {
                   updateLocationOptions: this.updateLocationOptions,
