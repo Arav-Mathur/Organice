@@ -52,7 +52,7 @@ export default class Kitchen extends Component {
   }
 
   render() {
-    console.log(Items.state.allItems);
+    console.log('allItems in render:', Items.state.allItems);
     return (
       <View style={styles.container}>
         <Modal
