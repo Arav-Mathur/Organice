@@ -25,6 +25,7 @@ export default class Kitchen extends Component {
       name: '',
       measure: '',
       location: '',
+      locationOptions: ['Kitchen', 'Pantry', 'Fridge'], // Default options
       isModalVisible: false,
       docId: '',
       isDeleteVisible: false,
@@ -46,6 +47,10 @@ export default class Kitchen extends Component {
   componentDidMount() {
     Items.getAllItems();
   }
+  updateLocationOptions = (newOptions) => {
+    this.setState({ locationOptions: newOptions });
+  }
+
   render() {
     console.log(Items.state.allItems);
     return (
@@ -84,12 +89,12 @@ export default class Kitchen extends Component {
               selectedValue={this.state.location}
               style={styles.formTextInput}
               onValueChange={(itemValue) => {
-                this.setState({ location: itemValue });
-              }}>
+                      this.setState({ location: itemValue });
+               }}>
               <Picker.Item label="Select Location" value="" />
-              <Picker.Item label="Kitchen" value="Kitchen" />
-              <Picker.Item label="Pantry" value="Pantry" />
-              <Picker.Item label="Fridge" value="Fridge" />
+              {this.state.locationOptions.map((location, index) => (
+             <Picker.Item label={location} value={location} key={index} />
+              ))}
             </Picker>
 
             <View>
@@ -155,13 +160,22 @@ export default class Kitchen extends Component {
                 }}>
                 <Text style={{ color: 'white' }}>Delete</Text>
               </TouchableOpacity>
+              <TouchableOpacity 
+                style={styles.GoBackButton}
+                onPress={() => {
+                  navigation.navigate('AddLocations', {
+                  updateLocationOptions: this.updateLocationOptions,
+                  currentOptions: this.state.locationOptions,
+                  });
+                }}>
+              </TouchableOpacity>
             </View>
           </View>
         </Modal>
 
         <FlatList
           data={Items.state.allItems}
-          keyExtractor={(item) => item.docId}
+          keyExtractor={item => item.docId}
           renderItem={({ item, i }) => (
             console.log(Items.state.allItems),
             console.log(item),
@@ -174,7 +188,7 @@ export default class Kitchen extends Component {
                   </ListItem.Title>
                   <View style={{ flexDirection: 'row' }}>
                     <ListItem.Subtitle>{item.Qty + ' '}</ListItem.Subtitle>
-                    <ListItem.Subtitle>{item.measure}</ListItem.Subtitle>
+                    <ListItem.Subtitle>{item.Measure}</ListItem.Subtitle>
                   </View>
                 </ListItem.Content>
                 <TouchableOpacity
@@ -183,8 +197,8 @@ export default class Kitchen extends Component {
                     this.setState({
                       name: item.Name,
                       qty: item.Qty,
-                      measure: item.measure,
-                      location: item.location,
+                      measure: item.Measure,
+                      location: item.Location,
                       docId: item.docId,
                       isModalVisible: true,
                       isDeleteVisible: true,
@@ -311,5 +325,8 @@ const styles = StyleSheet.create({
       width: 0,
       height: 8,
     },
+  },
+  GoBackButton: {
+    
   },
 });

@@ -53,8 +53,8 @@ class Items extends React.Component {
       .update({
         Name: name,
         Qty: qty,
-        location: location,
-        measure: measure,
+        Location: location,
+        Measure: measure,
       })
       .catch((error) => {
         console.error('Error updating item:', error);
@@ -67,8 +67,8 @@ class Items extends React.Component {
       .add({
         Name: name,
         Qty: qty,
-        measure: measure,
-        location: location,
+        Measure: measure,
+        Location: location,
       })
 
       .catch((error) => {
