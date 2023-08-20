@@ -4,7 +4,7 @@ import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import LoginScreen from '../screens/LoginScreen';
 import Kitchen from '../screens/Kitchen';
-import {MyTab} from "./BottomTabNavigator"
+import MyTab from "./BottomTabNavigator"
 const Stack = createStackNavigator();
 
 function MyStack() {

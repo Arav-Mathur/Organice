@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 import {
   Text,
   View,
@@ -8,39 +8,47 @@ import {
   Modal,
   TextInput,
   Alert,
-} from "react-native";
-import Constants from "expo-constants";
-import { ListItem } from "@rneui/themed";
-import db from "../config";
+} from 'react-native';
+import Constants from 'expo-constants';
+import { ListItem } from '@rneui/themed';
+import db from '../config';
 
 class Items extends React.Component {
   constructor() {
     super();
     this.state = {
-      loc: "",
+      loc: '',
+      allItems: [],
+      isModalVisible: false,
     };
   }
-  getAllItems = (locate) => {
-    this.loc = locate;
-    db.collection("Items")
+  getAllItems = () => {
+    console.log('Getitems');
+    db.collection('Items')
       .get()
       .then((snapshot) => {
-        var allItems = snapshot.docs.map((doc) => {
-          // Include the document ID in the data object
-          return { ...doc.data(), docId: doc.id };
+        // var all = snapshot.docs.map((doc) => {
+        //   return { ...doc.data(), docId: doc.id }; // Include the document ID in the data object
+        // });
+        // this.setState({ allItems: all });
+        this.setState({
+          allItems: snapshot.docs.map((doc) => {
+            return { ...doc.data(), docId: doc.id };
+          }),
         });
-        this.loc.setState({ allItems });
+
+        // console.log(snapshot.docs.map((doc) => ({ ...doc.data(), docId: doc.id })));
+        // console.log(this.state.allItems);
       })
       .catch((error) => {
-        console.error("Error fetching data:", error);
+        console.error('Error fetching data:', error);
       });
   };
 
-  updateItems = () => {
-    const { name, qty, measure, location, docId } = this.loc.state;
-
+  updateItems = (docId,name,qty,location,measure) => {
+    // const { name, qty, measure, location, docId } = this.loc.state;
     // Update the item with the given docId
-    db.collection("Items")
+    db.collection('Items')
       .doc(docId)
       .update({
         Name: name,
@@ -48,121 +56,37 @@ class Items extends React.Component {
         location: location,
         measure: measure,
       })
-      .then(() => {
-        this.loc.setState({
-          name: "",
-          qty: "",
-          measure: "",
-          location: "",
-          docId: "", // Reset the docId after updating the item
-        });
-        this.getAllItems(); // Fetch all items again to reflect the update
-      })
       .catch((error) => {
-        console.error("Error updating item:", error);
+        console.error('Error updating item:', error);
       });
   };
-
-  addItems = () => {
-    const { name, qty, measure, location } = this.loc.state;
-
+  addItems = (name,qty,location,measure) => {
+    //const { name, qty, measure, location } = this.loc.state;
     // Add the new item to the database
-    db.collection("Items")
+    db.collection('Items')
       .add({
         Name: name,
         Qty: qty,
         measure: measure,
         location: location,
       })
-      .then(() => {
-        // Once the item is added, fetch all items again and update the state
-        this.getAllItems();
-        this.loc.setState({
-          name: "",
-          qty: "",
-          measure: "",
-          location: "",
-        });
-      })
+
       .catch((error) => {
-        console.error("Error adding item:", error);
+        console.error('Error adding item:', error);
       });
   };
 
   deleteItem = (docId) => {
-    db.collection("Items")
+    db.collection('Items')
       .doc(docId)
       .delete()
-      .then(() => {
-        this.loc.setState({
-          name: "",
-          qty: "",
-          measure: "",
-          location: "",
-          docId: "", // Reset the docId after updating the item
-        });
-        this.getAllItems();
-        // Close the view modal after deletion
-        this.loc.setState({
-          isModalVisible: false,
-          isDeleteVisible: false, // Hide the delete button after deletion
-        });
-      })
       .catch((error) => {
-        console.error("Error deleting item:", error);
+        console.error('Error deleting item:', error);
       });
   };
 
   showModal = () => {
-    this.loc.setState({ isModalVisible: true });
-  };
-  keyExtractor = (index) => index.toString();
-  renderItem = ({ item, i }) => {
-    return (
-      <ListItem bottomDivider>
-        <ListItem.Content>
-          <ListItem.Title style={{ color: "black", fontWeight: "bold" }}>
-            {item.Name}
-          </ListItem.Title>
-          <View style={{ flexDirection: "row" }}>
-            <ListItem.Subtitle>{item.Qty}</ListItem.Subtitle>
-            <ListItem.Subtitle>{item.measure}</ListItem.Subtitle>
-          </View>
-        </ListItem.Content>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => {
-            this.loc.setState({
-              name: item.Name,
-              qty: item.Qty,
-              measure: item.measure,
-              location: item.location,
-              docId: item.docId, // Update the docId in the state before opening the modal
-              isModalVisible: true,
-              isDeleteVisible: true,
-            });
-          }}
-        >
-          <Text style={{ color: "#ffff" }}>View</Text>
-        </TouchableOpacity>
-      </ListItem>
-    );
+    this.setState({ isModalVisible: true });
   };
 }
 export default new Items();
-
-const styles = StyleSheet.create({
-  button: {
-    width: 100,
-    height: 30,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#8fb913",
-    shadowColor: "#014f00",
-    shadowOffset: {
-      width: 0,
-      height: 8,
-    },
-    borderRadius: 5,
-  },
-});

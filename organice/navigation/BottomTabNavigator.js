@@ -5,6 +5,7 @@ import ShoppingList from '../screens/ShoppingList';
 const Tab = createMaterialBottomTabNavigator();
 
 const MyTab = () => {
+      console.log("imhere")
   return (
     <Tab.Navigator
       initialRouteName="Kitchen"
