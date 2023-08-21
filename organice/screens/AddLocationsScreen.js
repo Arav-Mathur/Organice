@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
       height: 8,
     },
   },
-  goBackButton: {
+  nextButton: {
     width: "40%",
     alignSelf: "center",
     height: 45,
