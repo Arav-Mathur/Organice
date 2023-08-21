@@ -40,7 +40,8 @@ export default class Kitchen extends Component {
       location: "",
       docId: "",
       isModalVisible: false,
-    });
+    });   
+
     this.getAllItems();
   };
   getAllItems = async () => {
@@ -57,10 +58,11 @@ export default class Kitchen extends Component {
   };
   searchItems = async(item) =>{
     var text = String(item).toUpperCase()
-    const search =  await db.collection("Items").where('Name','==',text).get()
-    this.setState({
-      allItems:[...this.state.allItems,doc.data()],
-  })
+    const search = await db.collection("Items").where('Name', '==', text).get();
+    console.log(search)
+    search.forEach((doc) => {
+      console.log(doc.id, "=>", doc.data()); // Print the document ID and data
+    });
   }
   showModal = () => {
     this.setState({ isModalVisible: true });
@@ -249,7 +251,7 @@ export default class Kitchen extends Component {
                     isModalVisible: true,
                     isDeleteVisible: true,
                   });
-                  console.log("being pressed");
+                  console.log(this.state);
                 }}
               >
                 <Text style={{ color: "#ffff" }}>View</Text>
