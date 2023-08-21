@@ -59,18 +59,8 @@ handleLogin = async () => {
         .createUserWithEmailAndPassword(email, password);
 
        const uid = authResult.user.uid;
-    await firebase.firestore().collection(uid).add({// 
-    //   docId: 1,
-    //   Name: 'Test: you may delete this item',
-    //   Qty: '1',
-    //   Measure: 'kg',
-    //   Location: 'Kitchen',
-      // ... other properties
-    });        // docId: 1,
-        // email: email,
-        // uid: authResult.user.uid,
-        // locationOptions: this.state.locationOptions,
-      // });
+       await firebase.firestore().collection(uid).doc("dummy").set({})
+       await firebase.firestore().collection(uid).doc("dummy").delete()
 
       this.props.navigation.replace('AddLocationsScreen', {
         updateLocationOptions: this.updateLocationOptions,
