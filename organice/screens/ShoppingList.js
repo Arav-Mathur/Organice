@@ -20,5 +20,5 @@ export default class ShoppingList extends Component {
         return(
             <Text>hi</Text>
         )
-    };
+    }
 }

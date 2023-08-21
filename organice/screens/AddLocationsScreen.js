@@ -110,23 +110,6 @@ const styles = StyleSheet.create({
       height: 8,
     },
   },
-  nextButton: {
-    width: "85%",
-    alignSelf: "center",
-    height: 45,
-    marginTop: 10,
-    marginBottom: 10,
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 10,
-    backgroundColor: "#8fb913",
-    shadowColor: "#014f00",
-    shadowOffset: {
-      width: 0,
-      height: 8,
-    },
-  },
-
   buttonText: {
     fontSize: 25,
     fontWeight: "bold",

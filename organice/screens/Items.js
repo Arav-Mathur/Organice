@@ -34,7 +34,7 @@ class Items extends React.Component {
         console.error("Error updating item:", error);
       });
   };
-  addItems = (uid, name, qty, location, measure) => {
+  addItems = (uid, name, qty, location, measure) => {  
     db.collection(uid)
       .add({
         Name: name,

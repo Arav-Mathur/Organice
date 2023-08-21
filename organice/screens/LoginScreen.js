@@ -58,14 +58,14 @@ export default class LoginScreen extends Component {
 
       // Create a new top-level collection with user's UID as its name
       const uid = authResult.user.uid;
-      await firebase.firestore().collection(uid).add({
+      await firebase.firestore().collection(uid).add();/*{
         // You can add initial data for the user's collection here if needed
         docId: 1,
         email: email,
         uid: uid,
         locationOptions: this.state.locationOptions,
       });
-
+*/
       // Navigate to AddLocationsScreen and pass parameters
       this.props.navigation.replace("AddLocationsScreen", {
         updateLocationOptions: this.updateLocationOptions,
