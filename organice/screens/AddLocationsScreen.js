@@ -7,11 +7,11 @@ import {
   StyleSheet,
   Alert,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native"; // Import useNavigation
+import { useNavigation } from "@react-navigation/native";
 
 const AddLocationsScreen = ({ route }) => {
   const [newLocation, setNewLocation] = useState("");
-  const navigation = useNavigation(); // Get the navigation prop
+  const navigation = useNavigation();
 
   const handleAddLocation = () => {
     if (!newLocation) {
@@ -44,6 +44,8 @@ const AddLocationsScreen = ({ route }) => {
     navigation.navigate("My Inventory");
   };
 
+  const locationOptions = route.params?.currentOptions || [];
+
   return (
     <View style={styles.container}>
       <TextInput
@@ -55,6 +57,13 @@ const AddLocationsScreen = ({ route }) => {
       <TouchableOpacity style={styles.addButton} onPress={handleAddLocation}>
         <Text style={styles.buttonText}>Add Location</Text>
       </TouchableOpacity>
+      <View style={styles.locationsContainer}>
+        {locationOptions.map((location, index) => (
+          <Text key={index} style={styles.locationText}>
+            {location}
+          </Text>
+        ))}
+      </View>
       <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
         <Text style={styles.buttonText}>Next</Text>
       </TouchableOpacity>

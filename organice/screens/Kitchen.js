@@ -1,4 +1,4 @@
-import { Component } from "react";
+import { Component } from 'react';
 import {
   Text,
   View,
@@ -8,42 +8,44 @@ import {
   Modal,
   TextInput,
   Alert,
-} from "react-native";
-import Constants from "expo-constants";
-import { ListItem } from "@rneui/themed";
-import { Picker } from "@react-native-picker/picker";
-import db from "../config";
-import Items from "./Items"; // Make sure to import your Items file
+} from 'react-native';
+import Constants from 'expo-constants';
+import { ListItem } from '@rneui/themed';
+import { Picker } from '@react-native-picker/picker';
+import db from '../config';
+import Items from './Items';
 
 export default class Kitchen extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       allItems: [],
-      qty: "",
-      name: "",
-      measure: "",
-      location: "",
-      locationOptions: ["Kitchen", "Pantry", "Fridge"],
+      qty: '',
+      name: '',
+      measure: '',
+      location: '',
+      locationOptions: ['Kitchen', 'Pantry', 'Fridge'],
       isModalVisible: false,
-      docId: "",
+      docId: '',
       isDeleteVisible: false,
-      search: "",
+      search: '',
+      uid: this.props.route.params?.uid
     };
     this.requestRef = null;
   }
+
   clearItems = () => {
     this.setState({
-      name: "",
-      qty: "",
-      measure: "",
-      location: "",
-      docId: "",
+      name: '',
+      qty: '',
+      measure: '',
+      location: '',
+      docId: '',
       isModalVisible: false,
     });
-    const { uid } = this.props.route.params;
-    this.getAllItems(uid);
+    this.getAllItems(this.state.uid);
   };
+
   getAllItems = async (uid) => {
     try {
       const snapshot = await db.collection(uid).get();
@@ -53,47 +55,43 @@ export default class Kitchen extends Component {
       }));
       this.setState({ allItems: itemsData });
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.error('Error fetching data:', error);
     }
   };
-  searchItems = async (uid,item) => {
-    try {
-      const search = await db
-        .collection(uid)
-        .where("Name", "==", item)
-        .get();
 
+  searchItems = async (uid, item) => {
+    try {
+      const search = await db.collection(uid).where('Name', '==', item).get();
       const searchData = search.docs.map((doc) => ({
         ...doc.data(),
-        docId: doc.id,
+        docId: doc.id, 
       }));
-
       this.setState({ allItems: searchData });
     } catch (error) {
-      console.error("Error searching data:", error);
+      console.error('Error searching data:', error);
     }
   };
 
   showModal = () => {
     this.setState({ isModalVisible: true });
   };
+
   updateLocationOptions = (newOptions) => {
-    console.log("Updating options with:", newOptions);
     this.setState({ locationOptions: newOptions });
   };
-  componentDidMount() {
-    this.clearItems();
-  }
-  render() {
-    const { navigation } = this.props; // Get the navigation prop
 
+componentDidMount() {
+    this.clearItems();
+}
+
+
+  render() {
     return (
       <View style={styles.container}>
         <Modal
           animationType="fade"
           transparent={true}
-          visible={this.state.isModalVisible}
-        >
+          visible={this.state.isModalVisible}>
           <View style={styles.modalContainer}>
             <Text style={styles.modalText}>Edit Item</Text>
             <TextInput
@@ -126,8 +124,7 @@ export default class Kitchen extends Component {
               style={styles.formTextInput}
               onValueChange={(itemValue) => {
                 this.setState({ location: itemValue });
-              }}
-            >
+              }}>
               <Picker.Item label="Select Location" value="" />
               {this.state.locationOptions.map((location, index) => (
                 <Picker.Item label={location} value={location} key={index} />
@@ -139,17 +136,17 @@ export default class Kitchen extends Component {
                 style={styles.registerButton}
                 onPress={() => {
                   if (
-                    this.state.name != "" &&
-                    this.state.qty != "" &&
-                    this.state.measure != ""
+                    this.state.name != '' &&
+                    this.state.qty != '' &&
+                    this.state.measure != ''
                   ) {
                     if (Number(this.state.qty) <= 0) {
-                      Alert.alert("Quantity must be a positive number");
+                      Alert.alert('Quantity must be a positive number');
                       return;
                     }
                     if (this.state.docId) {
                       Items.updateItems(
-                        uid,
+                        this.state.uid,
                         this.state.docId,
                         this.state.name,
                         this.state.qty,
@@ -158,24 +155,24 @@ export default class Kitchen extends Component {
                       );
                       this.clearItems();
                     } else {
+                      console.log(this.state.uid)
                       Items.addItems(
-                        uid,
+                        this.state.uid,
                         this.state.name,
                         this.state.qty,
                         this.state.location,
                         this.state.measure
                       );
                       this.clearItems();
-                      console.log("additem");
+                      console.log('additem');
                     }
                     this.setState({ isModalVisible: false });
 
-                    console.log("submit");
+                    console.log('submit');
                   } else {
-                    alert("All Fields Must Be Inputed");
+                    alert('All Fields Must Be Inputed');
                   }
-                }}
-              >
+                }}>
                 <Text style={styles.registerButtonText}>Submit</Text>
               </TouchableOpacity>
 
@@ -184,8 +181,7 @@ export default class Kitchen extends Component {
                 onPress={() => {
                   this.clearItems();
                   this.setState({ isModalVisible: false });
-                }}
-              >
+                }}>
                 <Text style={styles.cancelButtonText}>Cancel</Text>
               </TouchableOpacity>
 
@@ -193,26 +189,24 @@ export default class Kitchen extends Component {
                 style={styles.deleteButton}
                 visible={this.state.isDeleteVisible}
                 onPress={() => {
-                  Items.deleteItem(uid, this.state.docId);
+                  Items.deleteItem(this.state.uid, this.state.docId);
                   this.setState({
                     isModalVisible: false,
                     isDeleteVisible: false,
                   });
                   this.clearItems();
-                }}
-              >
-                <Text style={{ color: "white" }}>Delete</Text>
+                }}>
+                <Text style={{ color: 'white' }}>Delete</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.registerButton}
                 onPress={() => {
-                  navigation.navigate("AddLocationsScreen", {
+                  navigation.navigate('AddLocationsScreen', {
                     updateLocationOptions: this.updateLocationOptions,
                     currentOptions: this.state.locationOptions,
                   });
                   this.setState({ isModalVisible: false });
-                }}
-              >
+                }}>
                 <Text style={styles.registerButtonText}>
                   Add/Edit Locations
                 </Text>
@@ -232,194 +226,198 @@ export default class Kitchen extends Component {
           <TouchableOpacity
             style={styles.searchButton}
             onPress={() => {
-              this.searchItems(uid,this.state.search);
-            }}
-          >
+              this.searchItems(this.state.uid, this.state.search);
+            }}>
             <Text style={styles.registerButtonText}>Search</Text>
           </TouchableOpacity>
-        </View>
-
-        <FlatList
-          data={this.state.allItems}
-          keyExtractor={(item) => item.docId}
-          renderItem={({ item, i }) => (
-            <ListItem bottomDivider>
-              <ListItem.Content>
-                <ListItem.Title style={{ color: "black", fontWeight: "bold" }}>
-                  {item.Name}
-                </ListItem.Title>
-                <View style={{ flexDirection: "row" }}>
-                  <ListItem.Subtitle>{item.Qty + " "}</ListItem.Subtitle>
-                  <ListItem.Subtitle>{item.Measure}</ListItem.Subtitle>
-                </View>
-              </ListItem.Content>
-
-              <TouchableOpacity
-                style={styles.button}
-                onPress={() => {
-                  this.setState({
-                    name: item.Name,
-                    qty: item.Qty,
-                    measure: item.Measure,
-                    location: item.Location,
-                    docId: item.docId,
-                    isModalVisible: true,
-                    isDeleteVisible: true,
-                  });
-                  console.log(this.state);
-                }}
-              >
-                <Text style={{ color: "#ffff" }}>View</Text>
-              </TouchableOpacity>
-            </ListItem>
-          )}
-        />
-        <View>
           <TouchableOpacity
+            style={styles.searchButton}
             onPress={() => {
-              this.showModal(),
-                this.setState({ isDeleteVisible: false, isModalVisible: true });
-              console.log(this.state.isModalVisible);
-            }}
-          >
-            <Text>+</Text>
+             this.getAllItems(this.state.uid)
+            }}>  
+            <Text style={styles.registerButtonText}>X</Text>
           </TouchableOpacity>
+          </View>
+
+<FlatList
+  data={this.state.allItems}
+  keyExtractor={(item) => item.docId}
+  renderItem={({ item, i }) => (
+    <ListItem bottomDivider>
+      <ListItem.Content>
+        <ListItem.Title style={{ color: 'black', fontWeight: 'bold' }}>
+          {item.Name}
+        </ListItem.Title>
+        <View style={{ flexDirection: 'row' }}>
+          <ListItem.Subtitle>{item.Qty + ' '}</ListItem.Subtitle>
+          <ListItem.Subtitle>{item.Measure}</ListItem.Subtitle>
         </View>
-      </View>
-    );
-  }
+      </ListItem.Content>
+
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => {
+          this.setState({
+            name: item.Name,
+            qty: item.Qty,
+            measure: item.Measure,
+            location: item.Location,
+            docId: item.docId,
+            isModalVisible: true,
+            isDeleteVisible: true,
+          });
+          console.log(this.state);
+        }}>
+        <Text style={{ color: '#ffff' }}>View</Text>
+      </TouchableOpacity>
+    </ListItem>
+  )}
+/>
+<View>
+  <TouchableOpacity
+    onPress={() => {
+      this.showModal(),
+        this.setState({ isDeleteVisible: false, isModalVisible: true });
+      console.log(this.state.isModalVisible);
+    }}>
+    <Text>+</Text>
+  </TouchableOpacity>
+</View>
+</View>
+);
+}
 }
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    paddingTop: Constants.statusBarHeight,
-    backgroundColor: "#ecf0f1",
-    padding: 8,
-  },
-  modalText: {
-    margin: 30,
-  },
-  searchBar: {
-    flexDirection: "row",
-    height: 40,
-    width: "auto",
-    alignItems: "center",
-    marginBottom: 10,
-  },
-  bar: {
-    width: "65%",
-    height: 35,
-    alignSelf: "center",
-    borderColor: "#014f00",
-    borderRadius: 10,
-    borderWidth: 2,
-    marginRight: "2%",
-    marginBottom: 10,
-    padding: 10,
-  },
-  searchButton: {
-    width: "25%",
-    height: 35,
-    alignSelf: "center",
-    backgroundColor: "#8fb913",
-    justifyContent: "center",
-    borderRadius: 10,
-    shadowColor: "#014f00",
-    shadowOffset: {
-      width: 0,
-      height: 8,
-    },
-  },
-  modalContainer: {
-    flex: 1,
-    borderRadius: 20,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#ffff",
-    marginHorizontal: 10,
-    marginVertical: 80,
-  },
-  formTextInput: {
-    width: "75%",
-    height: 35,
-    alignSelf: "center",
-    borderColor: "#014f00",
-    borderRadius: 10,
-    borderWidth: 2,
-    marginBottom: 20,
-    padding: 10,
-  },
-  registerButton: {
-    width: "75%",
-    height: 35,
-    alignSelf: "center",
-    backgroundColor: "#8fb913",
-    justifyContent: "center",
-    borderRadius: 10,
-    marginBottom: 20,
+container: {
+flex: 1,
+justifyContent: 'center',
+paddingTop: Constants.statusBarHeight,
+backgroundColor: '#ecf0f1',
+padding: 8,
+},
+modalText: {
+margin: 30,
+},
+searchBar: {
+flexDirection: 'row',
+height: 40,
+width: 'auto',
+alignItems: 'center',
+marginBottom: 10,
+},
+bar: {
+width: '65%',
+height: 35,
+alignSelf: 'center',
+borderColor: '#014f00',
+borderRadius: 10,
+borderWidth: 2,
+marginRight: '2%',
+marginBottom: 10,
+padding: 10,
+},
+searchButton: {
+width: '25%',
+height: 35,
+alignSelf: 'center',
+backgroundColor: '#8fb913',
+justifyContent: 'center',
+borderRadius: 10,
+shadowColor: '#014f00',
+shadowOffset: {
+width: 0,
+height: 8,
+},
+},
+modalContainer: {
+flex: 1,
+borderRadius: 20,
+justifyContent: 'center',
+alignItems: 'center',
+backgroundColor: '#ffff',
+marginHorizontal: 10,
+marginVertical: 80,
+},
+formTextInput: {
+width: '75%',
+height: 35,
+alignSelf: 'center',
+borderColor: '#014f00',
+borderRadius: 10,
+borderWidth: 2,
+marginBottom: 20,
+padding: 10,
+},
+registerButton: {
+width: '75%',
+height: 35,
+alignSelf: 'center',
+backgroundColor: '#8fb913',
+justifyContent: 'center',
+borderRadius: 10,
+marginBottom: 20,
 
-    shadowColor: "#014f00",
-    shadowOffset: {
-      width: 0,
-      height: 8,
-    },
-  },
-  registerButtonText: {
-    fontSize: 15,
-    fontWeight: "bold",
-    color: "white",
-    alignSelf: "center",
-    alignItems: "center",
-  },
-  cancelButton: {
-    width: "75%",
-    height: 35,
-    alignSelf: "center",
-    backgroundColor: "#8388A4",
-    justifyContent: "center",
-    borderRadius: 10,
-    color: "#474B64",
-    shadowColor: "#014f00",
-    marginBottom: 20,
+shadowColor: '#014f00',
+shadowOffset: {
+width: 0,
+height: 8,
+},
+},
+registerButtonText: {
+fontSize: 15,
+fontWeight: 'bold',
+color: 'white',
+alignSelf: 'center',
+alignItems: 'center',
+},
+cancelButton: {
+width: '75%',
+height: 35,
+alignSelf: 'center',
+backgroundColor: '#8388A4',
+justifyContent: 'center',
+borderRadius: 10,
+color: '#474B64',
+shadowColor: '#014f00',
+marginBottom: 20,
 
-    shadowOffset: {
-      width: 0,
-      height: 8,
-    },
-  },
-  cancelButtonText: {
-    fontSize: 15,
-    fontWeight: "bold",
-    color: "white",
-    alignSelf: "center",
-    alignItems: "center",
-  },
-  button: {
-    width: 100,
-    height: 30,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#8fb913",
-    shadowColor: "#014f00",
-    shadowOffset: {
-      width: 0,
-      height: 8,
-    },
-    borderRadius: 5,
-  },
-  deleteButton: {
-    width: "75%",
-    height: 35,
-    alignSelf: "center",
-    backgroundColor: "#ff5722",
-    justifyContent: "center",
-    marginBottom: 20,
-    borderRadius: 10,
-    shadowColor: "#014f00",
-    shadowOffset: {
-      width: 0,
-      height: 8,
-    },
-  },
+shadowOffset: {
+width: 0,
+height: 8,
+},
+},
+cancelButtonText: {
+fontSize: 15,
+fontWeight: 'bold',
+color: 'white',
+alignSelf: 'center',
+alignItems: 'center',
+},
+button: {
+width: 100,
+height: 30,
+justifyContent: 'center',
+alignItems: 'center',
+backgroundColor: '#8fb913',
+shadowColor: '#014f00',
+shadowOffset: {
+width: 0,
+height: 8,
+},
+borderRadius: 5,
+},
+deleteButton: {
+width: '75%',
+height: 35,
+alignSelf: 'center',
+backgroundColor: '#ff5722',
+justifyContent: 'center',
+marginBottom: 20,
+borderRadius: 10,
+shadowColor: '#014f00',
+shadowOffset: {
+width: 0,
+height: 8,
+},
+},
 });
