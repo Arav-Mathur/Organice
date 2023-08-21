@@ -24,17 +24,14 @@ const AddLocationsScreen = ({ route }) => {
       console.log("No currentOptions found."); // Debugging
       return;
     }
-    console.log("Current options before update:", currentOptions);
-    updateLocationOptions(newOptions); // Use the function
-    console.log("Current options after update:", newOptions);
+    
     
     if (currentOptions.includes(newLocation)) {
       // Alert or handle duplicate location
       Alert.alert("Duplicate Location", "This location already exists.");
     } else {
       const newOptions = [...currentOptions, newLocation];
-      console.log("New options before update:", newOptions);
-      updateLocationOptions(newOptions); // Use the function
+      
       setNewLocation("");
       Alert.alert(
         "Location Added",
@@ -62,13 +59,13 @@ const AddLocationsScreen = ({ route }) => {
       </TouchableOpacity>
       <View style={styles.locationsContainer}>
         {locationOptions.map((location, index) => (
-          <Text key={index} style={styles.buttonText}>
+          <Text key={index} style={styles.locationsButtonTextbuttonText}>
             {location}
           </Text>
         ))}
       </View>
       <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
-        <Text style={styles.buttonText}>Next</Text>
+        <Text style={styles.ButtonText}>Next</Text>
       </TouchableOpacity>
     </View>
   );
@@ -126,6 +123,13 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: "bold",
     color: "white",
+    alignSelf: "center",
+    alignItems: "center",
+  },
+  locationsButtonText: {
+    fontSize: 25,
+    fontWeight: "bold",
+    color: "black",
     alignSelf: "center",
     alignItems: "center",
   },

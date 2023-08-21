@@ -45,6 +45,7 @@ class Items extends React.Component {
         Qty: qty,
         Measure: measure,
         Location: location,
+
       })
       .catch((error) => {
         console.error('Error adding item:', error);
