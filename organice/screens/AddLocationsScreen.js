@@ -130,6 +130,7 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: "bold",
     color: "black",
+    marginTop: 10,
     alignSelf: "center",
     alignItems: "center",
   },
