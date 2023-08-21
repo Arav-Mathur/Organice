@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { Component } from "react";
 import {
   Text,
   View,
@@ -8,37 +8,37 @@ import {
   Modal,
   TextInput,
   Alert,
-} from 'react-native';
-import Constants from 'expo-constants';
-import { ListItem } from '@rneui/themed';
-import { Picker } from '@react-native-picker/picker';
-import db from '../config';
-import Items from './Items'; // Make sure to import your Items file
+} from "react-native";
+import Constants from "expo-constants";
+import { ListItem } from "@rneui/themed";
+import { Picker } from "@react-native-picker/picker";
+import db from "../config";
+import Items from "./Items"; // Make sure to import your Items file
 
 export default class Kitchen extends Component {
   constructor() {
     super();
     this.state = {
       allItems: [],
-      qty: '',
-      name: '',
-      measure: '',
-      location: '',
-      locationOptions: ['Kitchen', 'Pantry', 'Fridge'],
+      qty: "",
+      name: "",
+      measure: "",
+      location: "",
+      locationOptions: ["Kitchen", "Pantry", "Fridge"],
       isModalVisible: false,
-      docId: '',
+      docId: "",
       isDeleteVisible: false,
-      search: '',
+      search: "",
     };
     this.requestRef = null;
   }
   clearItems = () => {
     this.setState({
-      name: '',
-      qty: '',
-      measure: '',
-      location: '',
-      docId: '',
+      name: "",
+      qty: "",
+      measure: "",
+      location: "",
+      docId: "",
       isModalVisible: false,
     });
 
@@ -46,21 +46,21 @@ export default class Kitchen extends Component {
   };
   getAllItems = async () => {
     try {
-      const snapshot = await db.collection('Items').get();
+      const snapshot = await db.collection("Items").get();
       const itemsData = snapshot.docs.map((doc) => ({
         ...doc.data(),
         docId: doc.id,
       }));
       this.setState({ allItems: itemsData });
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error("Error fetching data:", error);
     }
   };
   searchItems = async (item) => {
     try {
       const search = await db
-        .collection('Items')
-        .where('Name', '==', item)
+        .collection("Items")
+        .where("Name", "==", item)
         .get();
 
       const searchData = search.docs.map((doc) => ({
@@ -70,7 +70,7 @@ export default class Kitchen extends Component {
 
       this.setState({ allItems: searchData });
     } catch (error) {
-      console.error('Error searching data:', error);
+      console.error("Error searching data:", error);
     }
   };
 
@@ -78,7 +78,7 @@ export default class Kitchen extends Component {
     this.setState({ isModalVisible: true });
   };
   updateLocationOptions = (newOptions) => {
-    console.log('Updating options with:', newOptions);
+    console.log("Updating options with:", newOptions);
     this.setState({ locationOptions: newOptions });
   };
   componentDidMount() {
@@ -92,7 +92,8 @@ export default class Kitchen extends Component {
         <Modal
           animationType="fade"
           transparent={true}
-          visible={this.state.isModalVisible}>
+          visible={this.state.isModalVisible}
+        >
           <View style={styles.modalContainer}>
             <Text style={styles.modalText}>Edit Item</Text>
             <TextInput
@@ -125,7 +126,8 @@ export default class Kitchen extends Component {
               style={styles.formTextInput}
               onValueChange={(itemValue) => {
                 this.setState({ location: itemValue });
-              }}>
+              }}
+            >
               <Picker.Item label="Select Location" value="" />
               {this.state.locationOptions.map((location, index) => (
                 <Picker.Item label={location} value={location} key={index} />
@@ -137,12 +139,12 @@ export default class Kitchen extends Component {
                 style={styles.registerButton}
                 onPress={() => {
                   if (
-                    this.state.name != '' &&
-                    this.state.qty != '' &&
-                    this.state.measure != ''
+                    this.state.name != "" &&
+                    this.state.qty != "" &&
+                    this.state.measure != ""
                   ) {
                     if (Number(this.state.qty) <= 0) {
-                      Alert.alert('Quantity must be a positive number');
+                      Alert.alert("Quantity must be a positive number");
                       return;
                     }
                     if (this.state.docId) {
@@ -162,15 +164,16 @@ export default class Kitchen extends Component {
                         this.state.measure
                       );
                       this.clearItems();
-                      console.log('additem');
+                      console.log("additem");
                     }
                     this.setState({ isModalVisible: false });
 
-                    console.log('submit');
+                    console.log("submit");
                   } else {
-                    alert('All Fields Must Be Inputed');
+                    alert("All Fields Must Be Inputed");
                   }
-                }}>
+                }}
+              >
                 <Text style={styles.registerButtonText}>Submit</Text>
               </TouchableOpacity>
 
@@ -179,7 +182,8 @@ export default class Kitchen extends Component {
                 onPress={() => {
                   this.clearItems();
                   this.setState({ isModalVisible: false });
-                }}>
+                }}
+              >
                 <Text style={styles.cancelButtonText}>Cancel</Text>
               </TouchableOpacity>
 
@@ -193,18 +197,20 @@ export default class Kitchen extends Component {
                     isDeleteVisible: false,
                   });
                   this.clearItems();
-                }}>
-                <Text style={{ color: 'white' }}>Delete</Text>
+                }}
+              >
+                <Text style={{ color: "white" }}>Delete</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.registerButton}
                 onPress={() => {
-                  navigation.navigate('AddLocationsScreen', {
+                  navigation.navigate("AddLocationsScreen", {
                     updateLocationOptions: this.updateLocationOptions,
                     currentOptions: this.state.locationOptions,
                   });
                   this.setState({ isModalVisible: false });
-                }}>
+                }}
+              >
                 <Text style={styles.registerButtonText}>
                   Add/Edit Locations
                 </Text>
@@ -225,7 +231,8 @@ export default class Kitchen extends Component {
             style={styles.searchButton}
             onPress={() => {
               this.searchItems(this.state.search);
-            }}>
+            }}
+          >
             <Text style={styles.registerButtonText}>Search</Text>
           </TouchableOpacity>
         </View>
@@ -236,11 +243,11 @@ export default class Kitchen extends Component {
           renderItem={({ item, i }) => (
             <ListItem bottomDivider>
               <ListItem.Content>
-                <ListItem.Title style={{ color: 'black', fontWeight: 'bold' }}>
+                <ListItem.Title style={{ color: "black", fontWeight: "bold" }}>
                   {item.Name}
                 </ListItem.Title>
-                <View style={{ flexDirection: 'row' }}>
-                  <ListItem.Subtitle>{item.Qty + ' '}</ListItem.Subtitle>
+                <View style={{ flexDirection: "row" }}>
+                  <ListItem.Subtitle>{item.Qty + " "}</ListItem.Subtitle>
                   <ListItem.Subtitle>{item.Measure}</ListItem.Subtitle>
                 </View>
               </ListItem.Content>
@@ -258,8 +265,9 @@ export default class Kitchen extends Component {
                     isDeleteVisible: true,
                   });
                   console.log(this.state);
-                }}>
-                <Text style={{ color: '#ffff' }}>View</Text>
+                }}
+              >
+                <Text style={{ color: "#ffff" }}>View</Text>
               </TouchableOpacity>
             </ListItem>
           )}
@@ -270,7 +278,8 @@ export default class Kitchen extends Component {
               this.showModal(),
                 this.setState({ isDeleteVisible: false, isModalVisible: true });
               console.log(this.state.isModalVisible);
-            }}>
+            }}
+          >
             <Text>+</Text>
           </TouchableOpacity>
         </View>
@@ -281,40 +290,40 @@ export default class Kitchen extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
     paddingTop: Constants.statusBarHeight,
-    backgroundColor: '#ecf0f1',
+    backgroundColor: "#ecf0f1",
     padding: 8,
   },
   modalText: {
     margin: 30,
   },
   searchBar: {
-    flexDirection: 'row',
+    flexDirection: "row",
     height: 40,
-    width: 'auto',
-    alignItems: 'center',
+    width: "auto",
+    alignItems: "center",
     marginBottom: 10,
   },
   bar: {
-    width: '65%',
+    width: "65%",
     height: 35,
-    alignSelf: 'center',
-    borderColor: '#014f00',
+    alignSelf: "center",
+    borderColor: "#014f00",
     borderRadius: 10,
     borderWidth: 2,
-    marginRight: '2%',
+    marginRight: "2%",
     marginBottom: 10,
     padding: 10,
   },
   searchButton: {
-    width: '25%',
+    width: "25%",
     height: 35,
-    alignSelf: 'center',
-    backgroundColor: '#8fb913',
-    justifyContent: 'center',
+    alignSelf: "center",
+    backgroundColor: "#8fb913",
+    justifyContent: "center",
     borderRadius: 10,
-    shadowColor: '#014f00',
+    shadowColor: "#014f00",
     shadowOffset: {
       width: 0,
       height: 8,
@@ -323,29 +332,32 @@ const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
     borderRadius: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#ffff',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#ffff",
     marginHorizontal: 10,
     marginVertical: 80,
   },
   formTextInput: {
-    width: '75%',
+    width: "75%",
     height: 35,
-    alignSelf: 'center',
-    borderColor: '#014f00',
+    alignSelf: "center",
+    borderColor: "#014f00",
     borderRadius: 10,
     borderWidth: 2,
+    marginBottom: 20,
     padding: 10,
   },
   registerButton: {
-    width: '75%',
+    width: "75%",
     height: 35,
-    alignSelf: 'center',
-    backgroundColor: '#8fb913',
-    justifyContent: 'center',
+    alignSelf: "center",
+    backgroundColor: "#8fb913",
+    justifyContent: "center",
     borderRadius: 10,
-    shadowColor: '#014f00',
+    marginBottom: 20,
+
+    shadowColor: "#014f00",
     shadowOffset: {
       width: 0,
       height: 8,
@@ -353,20 +365,22 @@ const styles = StyleSheet.create({
   },
   registerButtonText: {
     fontSize: 15,
-    fontWeight: 'bold',
-    color: 'white',
-    alignSelf: 'center',
-    alignItems: 'center',
+    fontWeight: "bold",
+    color: "white",
+    alignSelf: "center",
+    alignItems: "center",
   },
   cancelButton: {
-    width: '75%',
+    width: "75%",
     height: 35,
-    alignSelf: 'center',
-    backgroundColor: '#8388A4',
-    justifyContent: 'center',
+    alignSelf: "center",
+    backgroundColor: "#8388A4",
+    justifyContent: "center",
     borderRadius: 10,
-    color: '#474B64',
-    shadowColor: '#014f00',
+    color: "#474B64",
+    shadowColor: "#014f00",
+    marginBottom: 20,
+
     shadowOffset: {
       width: 0,
       height: 8,
@@ -374,18 +388,18 @@ const styles = StyleSheet.create({
   },
   cancelButtonText: {
     fontSize: 15,
-    fontWeight: 'bold',
-    color: 'white',
-    alignSelf: 'center',
-    alignItems: 'center',
+    fontWeight: "bold",
+    color: "white",
+    alignSelf: "center",
+    alignItems: "center",
   },
   button: {
     width: 100,
     height: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#8fb913',
-    shadowColor: '#014f00',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#8fb913",
+    shadowColor: "#014f00",
     shadowOffset: {
       width: 0,
       height: 8,
@@ -393,13 +407,14 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   deleteButton: {
-    width: '75%',
+    width: "75%",
     height: 35,
-    alignSelf: 'center',
-    backgroundColor: '#ff5722',
-    justifyContent: 'center',
+    alignSelf: "center",
+    backgroundColor: "#ff5722",
+    justifyContent: "center",
+    marginBottom: 20,
     borderRadius: 10,
-    shadowColor: '#014f00',
+    shadowColor: "#014f00",
     shadowOffset: {
       width: 0,
       height: 8,
