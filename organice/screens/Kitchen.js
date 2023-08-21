@@ -194,7 +194,7 @@ export default class Kitchen extends Component {
                 style={styles.deleteButton}
                 visible={this.state.isDeleteVisible}
                 onPress={() => {
-                  Items.deleteItem(uid,this.state.docId);
+                  Items.deleteItem(uid, this.state.docId);
                   this.setState({
                     isModalVisible: false,
                     isDeleteVisible: false,

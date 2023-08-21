@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from "react";
 import {
   Text,
   View,
@@ -8,10 +8,10 @@ import {
   Modal,
   TextInput,
   Alert,
-} from 'react-native';
-import Constants from 'expo-constants';
-import { ListItem } from '@rneui/themed';
-import db from '../config';
+} from "react-native";
+import Constants from "expo-constants";
+import { ListItem } from "@rneui/themed";
+import db from "../config";
 
 class Items extends React.Component {
   constructor() {
@@ -21,8 +21,7 @@ class Items extends React.Component {
     };
   }
 
-
-  updateItems = (uid,docId, name, qty, location, measure) => {
+  updateItems = (uid, docId, name, qty, location, measure) => {
     db.collection(uid)
       .doc(docId)
       .update({
@@ -32,10 +31,10 @@ class Items extends React.Component {
         Measure: measure,
       })
       .catch((error) => {
-        console.error('Error updating item:', error);
+        console.error("Error updating item:", error);
       });
   };
-  addItems = (uid,name, qty, location, measure) => {
+  addItems = (uid, name, qty, location, measure) => {
     db.collection(uid)
       .add({
         Name: name,
@@ -45,16 +44,16 @@ class Items extends React.Component {
       })
 
       .catch((error) => {
-        console.error('Error adding item:', error);
+        console.error("Error adding item:", error);
       });
   };
 
-  deleteItem = (uid,docId) => {
+  deleteItem = (uid, docId) => {
     db.collection(uid)
       .doc(docId)
       .delete()
       .catch((error) => {
-        console.error('Error deleting item:', error);
+        console.error("Error deleting item:", error);
       });
   };
 }
