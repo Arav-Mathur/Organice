@@ -1,109 +1,115 @@
 import React, { Component } from 'react';
-import { View, Button, StyleSheet ,Alert, TouchableOpacity, Text} from 'react-native';
-import t from 'tcomb-form-native';
-
-import * as firebase from 'firebase'; // Make sure this import is added
-
-const Form = t.form.Form;
-
-const User = t.struct({
-  email: t.String,
-  password: t.String,
-});
-
-const options = {
-  fields: {
-    password: {
-      secureTextEntry: true, // Set secureTextEntry to true for the password field
-    },
-  },
-};
+import {
+  View,
+  StyleSheet,
+  Alert,
+  TouchableOpacity,
+  Text,
+  TextInput,
+} from 'react-native';
+import * as firebase from 'firebase';
 
 export default class LoginScreen extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      email: '',
+      password: '',
+      locationOptions: [], // Initialize as an empty array
+    };
+  }
+
   handleLogin = async () => {
-    const formData = this.loginForm.getValue();
-    if (formData) {
-      try {
-        const { email, password } = formData;
+    const { email, password } = this.state;
 
-        await firebase.auth().signInWithEmailAndPassword(email, password);
+    try {
+      await firebase.auth().signInWithEmailAndPassword(email, password);
 
-        // User is authenticated, navigate to the Kitchen screen
-        console.log("works")
-        this.props.navigation.replace("My Inventory");
-        //  return (
-        //    <MyTab/>
-        //  );
-        //navigation.replace("Login")
-      } catch (error) {
-        console.error('Error:', error);
+      // User is authenticated, navigate to the Kitchen screen
+      console.log('Login successful');
+      this.props.navigation.replace("My Inventory");
+    } catch (error) {
+      console.error('Error:', error);
 
-        if (
-          error.code === 'auth/user-not-found' ||
-          error.code === 'auth/wrong-password'
-        ) {
-          Alert.alert(
-            'Login Failed',
-            'Invalid email or password. Please check your credentials.'
-          );
-        } else {
-          Alert.alert(
-            'Login Failed',
-            'An error occurred during login. Please try again later.'
-          );
-        }
+      if (
+        error.code === 'auth/user-not-found' ||
+        error.code === 'auth/wrong-password'
+      ) {
+        Alert.alert(
+          'Login Failed',
+          'Invalid email or password. Please check your credentials.'
+        );
+      } else {
+        Alert.alert(
+          'Login Failed',
+          'An error occurred during login. Please try again later.'
+        );
       }
     }
   };
 
   handleSignUp = async () => {
-    const formData = this.loginForm.getValue();
+    const { email, password } = this.state;
 
-    if (formData) {
-      try {
-        const { email, password } = formData;
+    try {
+      await firebase.auth().createUserWithEmailAndPassword(email, password);
 
-        await firebase.auth().createUserWithEmailAndPassword(email, password);
+      // Navigate to AddLocationsScreen and pass parameters
+      this.props.navigation.replace('AddLocationsScreen', {
+        updateLocationOptions: this.updateLocationOptions, // Use the function
+        currentOptions: this.state.locationOptions,
+      });
+    } catch (error) {
+      console.error('Error:', error);
 
-        // User is registered, you can also automatically log in the user if desired
-        this.props.navigation.replace("AddLocationsScreen");
-      } catch (error) {
-        console.error('Error:', error);
-
-        if (error.code === 'auth/email-already-in-use') {
-          Alert.alert(
-            'Sign Up Failed',
-            'This email address is already in use. Please use a different email.'
-          );
-        } else {
-          Alert.alert(
-            'Sign Up Failed',
-            'Failed to create an account. Please try again later.'
-          );
-        }
+      if (error.code === 'auth/email-already-in-use') {
+        Alert.alert(
+          'Sign Up Failed',
+          'This email address is already in use. Please use a different email.'
+        );
+      } else {
+        Alert.alert(
+          'Sign Up Failed',
+          'Failed to create an account. Please try again later.'
+        );
       }
     }
+  };
+
+  updateLocationOptions = (newOptions) => {
+    this.setState({ locationOptions: newOptions });
   };
 
   render() {
     return (
       <View style={styles.container}>
-        <Form
-          ref={(c) => (this.loginForm = c)}
-          type={User}
-          options={options} // Pass the options to the Form
+        <TextInput
+          style={styles.input}
+          placeholder="Email"
+          onChangeText={(text) => this.setState({ email: text })}
+          value={this.state.email}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          secureTextEntry
+          onChangeText={(text) => this.setState({ password: text })}
+          value={this.state.password}
         />
 
-        <TouchableOpacity  style={styles.loginButton} onPress={this.handleLogin} >
-            <Text style={styles.buttonText}>Login</Text>
+        <TouchableOpacity style={styles.loginButton} onPress={this.handleLogin}>
+          <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={this.handleSignUp} style={styles.signUpButton} >
-            <Text style={styles.buttonText}>Sign Up</Text>
+        <TouchableOpacity
+          onPress={this.handleSignUp}
+          style={styles.signUpButton}>
+          <Text style={styles.buttonText}>Sign Up</Text>
         </TouchableOpacity>
       </View>
     );
   }
 }
+
 const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
@@ -112,42 +118,52 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
   },
   input: {
-    height: 40,
-    borderColor: 'gray',
+    fontSize: 20,
+    width: '85%',
+    alignSelf: 'center',
+    height: 45,
+    borderColor: '#014f00',
+    borderRadius: 10,
     borderWidth: 1,
-    marginBottom: 10,
-    paddingHorizontal: 10,
+    marginBottom: 20,
+    padding: 10,
   },
   loginButton: {
-    width: 352.5,
-    height: 30,
+    width: '85%',
+    alignSelf: 'center',
+    height: 45,
+    marginTop: 10,
+    marginBottom: 5,
     justifyContent: 'center',
     alignItems: 'center',
+    borderRadius: 10,
     backgroundColor: '#8fb913',
     shadowColor: '#014f00',
     shadowOffset: {
       width: 0,
       height: 8,
-  },
+    },
   },
   signUpButton: {
-    width: 352.5,
-    height: 30,
+    width: '40%',
+    alignSelf: 'center',
+    height: 45,
+    marginBottom: 20,
+    borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 10,
     backgroundColor: '#8fb913',
     shadowColor: '#014f00',
     shadowOffset: {
       width: 0,
       height: 8,
-  },
+    },
   },
   buttonText: {
-    fontSize: 16,
+    fontSize: 25,
     fontWeight: 'bold',
     color: 'white',
     alignSelf: 'center',
     alignItems: 'center',
-  }
-  });
+  },
+});

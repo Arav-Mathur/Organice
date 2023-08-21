@@ -1,50 +1,55 @@
 import React, { useState } from 'react';
-import { View, TextInput, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { View, TextInput, TouchableOpacity, Text, StyleSheet, Alert } from 'react-native';
+import { useNavigation } from '@react-navigation/native'; // Import useNavigation
 
-const AddLocationsScreen = ({ navigation, route }) => {
+const AddLocationsScreen = ({ route }) => {
   const [newLocation, setNewLocation] = useState('');
-  const [typedLocations, setTypedLocations] = useState([]);
+  const navigation = useNavigation(); // Get the navigation prop
 
-  const handleAddLocation = () => {
-    // Check if a new location is provided
-    if (newLocation) {
-      // Create a new array of options by adding the new location to the existing options
-      const newOptions = [...route.params.currentOptions, newLocation];
-      
-      // Call the updateLocationOptions function passed from the previous screen
-      route.params.updateLocationOptions(newOptions);
-      
-      // Update the typedLocations state with the new location
-      setTypedLocations([...typedLocations, newLocation]);
-      
-      // Clear the newLocation input field
-      setNewLocation('');
-    }
-  };  
+const handleAddLocation = () => {
+  if (!newLocation) {
+    return; // No need to proceed if newLocation is empty
+  }
+  const currentOptions = route.params?.currentOptions || [];
+  
+  if (currentOptions.includes(newLocation)) {
+    // Alert or handle duplicate location
+    Alert.alert('Duplicate Location', 'This location already exists.');
+  } else {
+    const newOptions = [...currentOptions, newLocation];
+    route.params?.updateLocationOptions(newOptions);
+    setNewLocation('');
+    Alert.alert('Location Added', 'The new location has been added successfully.');
 
-  return (
-    <View>
+  }
+};
+
+  const handleNext = () => {
+    navigation.navigate("Kitchen");
+  };
+
+
+
+return (
+    <View style={styles.container}>
       <TextInput
+        style={styles.input}
         placeholder="Enter a new location"
-        value={newLocation}
         onChangeText={setNewLocation}
+        value={newLocation}
       />
-      <TouchableOpacity style={styles.loginButton} onPress={handleAddLocation} >
+      <TouchableOpacity style={styles.addButton} onPress={handleAddLocation}>
         <Text style={styles.buttonText}>Add Location</Text>
       </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.signUpButton}
-        onPress={() =>
-          navigation.goBack() // Assuming you want to go back after adding locations
-        }
-      >
+      <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
+        <Text style={styles.buttonText}>Next</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.goBackButton} onPress={() => navigation.goBack()}>
         <Text style={styles.buttonText}>Go Back</Text>
       </TouchableOpacity>
     </View>
   );
 };
-
-export default AddLocationsScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -54,30 +59,24 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
   },
   input: {
-    height: 40,
-    borderColor: 'gray',
+    fontSize: 20,
+    width: '85%',
+    alignSelf: 'center',
+    height: 45,
+    borderColor: '#014f00',
+    borderRadius: 10,
     borderWidth: 1,
-    marginBottom: 10,
-    paddingHorizontal: 10,
+    marginBottom: 20,
+    padding: 10,
   },
-  loginButton: {
-    width: 352.5,
-    height: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#8fb913',
-    shadowColor: '#014f00',
-    shadowOffset: {
-      width: 0,
-      height: 8,
-    },
-  },
-  signUpButton: {
-    width: 352.5,
-    height: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
+  addButton: {
+    width: '85%',
+    alignSelf: 'center',
+    height: 45,
     marginTop: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 10,
     backgroundColor: '#8fb913',
     shadowColor: '#014f00',
     shadowOffset: {
@@ -85,11 +84,45 @@ const styles = StyleSheet.create({
       height: 8,
     },
   },
+  goBackButton: {
+    width: '40%',
+    alignSelf: 'center',
+    height: 45,
+    marginBottom: 20,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#8fb913',
+    shadowColor: '#014f00',
+    shadowOffset: {
+      width: 0,
+      height: 8,
+    },
+  },
+  nextButton: {
+    width: '85%',
+    alignSelf: 'center',
+    height: 45,
+    marginTop: 10,
+    marginBottom: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 10,
+    backgroundColor: '#8fb913',
+    shadowColor: '#014f00',
+    shadowOffset: {
+      width: 0,
+      height: 8,
+    },
+  },
+
   buttonText: {
-    fontSize: 16,
+    fontSize: 25,
     fontWeight: 'bold',
     color: 'white',
     alignSelf: 'center',
     alignItems: 'center',
   },
 });
+
+export default AddLocationsScreen;

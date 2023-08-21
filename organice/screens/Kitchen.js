@@ -13,8 +13,7 @@ import Constants from 'expo-constants';
 import { ListItem } from '@rneui/themed';
 import { Picker } from '@react-native-picker/picker';
 import db from '../config';
-import Items from './Items';
-import MyTab from '../navigation/BottomTabNavigator';
+import Items from './Items'; // Make sure to import your Items file
 
 export default class Kitchen extends Component {
   constructor() {
@@ -59,14 +58,14 @@ export default class Kitchen extends Component {
     this.setState({ isModalVisible: true });
   };
   componentDidMount() {
-    this.getAllItems();
+    this.clearItems();
   }
   updateLocationOptions = (newOptions) => {
     this.setState({ locationOptions: newOptions });
   };
-
   render() {
-    console.log(this.state.allItems);
+    const { navigation } = this.props; // Get the navigation prop
+
     return (
       <View style={styles.container}>
         <Modal
@@ -164,6 +163,7 @@ export default class Kitchen extends Component {
 
               <TouchableOpacity
                 style={styles.deleteButton}
+                visible={this.state.isDeleteVisible}
                 onPress={() => {
                   Items.deleteItem(this.state.docId);
                   this.setState({
@@ -174,16 +174,18 @@ export default class Kitchen extends Component {
                 }}>
                 <Text style={{ color: 'white' }}>Delete</Text>
               </TouchableOpacity>
-                <TouchableOpacity
-                    style={styles.deleteButton}
-                   onPress={() => {
-                    navigation.navigate('AddLocations', {
-                        updateLocationOptions: this.updateLocationOptions,
-                        currentOptions: this.state.locationOptions,
-                      });
-                    }}>
-                      <Text>Add/Edit Locations</Text>
-               </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.registerButton}
+                onPress={() => {
+                  navigation.navigate('AddLocationsScreen', {
+                    updateLocationOptions: this.updateLocationOptions,
+                    currentOptions: this.state.locationOptions,
+                  });
+                }}>
+                <Text style={styles.registerButtonText}>
+                  Add/Edit Locations
+                </Text>
+              </TouchableOpacity>
             </View>
           </View>
         </Modal>
@@ -202,6 +204,7 @@ export default class Kitchen extends Component {
                   <ListItem.Subtitle>{item.Measure}</ListItem.Subtitle>
                 </View>
               </ListItem.Content>
+
               <TouchableOpacity
                 style={styles.button}
                 onPress={() => {
@@ -224,7 +227,8 @@ export default class Kitchen extends Component {
         <View>
           <TouchableOpacity
             onPress={() => {
-              this.showModal(), this.setState({ isDeleteVisible: false });
+              this.showModal(),
+                this.setState({ isDeleteVisible: false, isModalVisible: true });
               console.log('button pressed');
             }}>
             <Text>+</Text>
@@ -284,7 +288,6 @@ const styles = StyleSheet.create({
     color: 'white',
     alignSelf: 'center',
     alignItems: 'center',
-    marginTop: 2,
   },
   cancelButton: {
     width: '75%',
@@ -337,5 +340,4 @@ const styles = StyleSheet.create({
       height: 8,
     },
   },
-  
 });
