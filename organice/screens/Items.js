@@ -21,23 +21,6 @@ class Items extends React.Component {
     };
   }
 
-  // componentDidMount() {
-  //   this.getAllItems();
-  // }
-
-  // getAllItems = async () => {
-  //   try {
-  //     const snapshot = await db.collection('Items').get();
-  //     const itemsData = snapshot.docs.map((doc) => ({
-  //       ...doc.data(),
-  //       docId: doc.id,
-  //     }));
-  //     this.setState({ allItems: itemsData });
-  //     console.log('Fetched Items:', itemsData); // Log fetched items to console
-  //   } catch (error) {
-  //     console.error('Error fetching data:', error);
-  //   }
-  // };
 
   updateItems = (docId, name, qty, location, measure) => {
     db.collection('Items')
