@@ -18,7 +18,7 @@ const AddLocationsScreen = ({ route }) => {
       return; // No need to proceed if newLocation is empty
     }
 
-    const { updateLocationOptions, currentOptions } = route.params || {}; // Destructure route.params
+    const { updateLocationOptions, currentOptions, uid } = route.params || {}; // Destructure route.params
 
     if (!currentOptions) {
       console.log("No currentOptions found."); // Debugging
@@ -41,7 +41,7 @@ const AddLocationsScreen = ({ route }) => {
   };
 
   const handleNext = () => {
-    navigation.navigate("My Inventory");
+    navigation.navigate("My Inventory", { uid: route.params?.uid });
   };
 
   const locationOptions = route.params?.currentOptions || [];

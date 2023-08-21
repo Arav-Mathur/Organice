@@ -65,6 +65,7 @@ handleLogin = async () => {
       this.props.navigation.replace('AddLocationsScreen', {
         updateLocationOptions: this.updateLocationOptions,
         currentOptions: this.state.locationOptions,
+        uid:uid
       });
     } catch (error) {
       console.error('Error:', error);
