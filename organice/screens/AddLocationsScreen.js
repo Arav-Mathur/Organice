@@ -26,7 +26,7 @@ const AddLocationsScreen = ({ navigation, route }) => {
       </TouchableOpacity>
       <TouchableOpacity style={styles.signUpButton}
         onPress={() =>
-          navigation.navigate('Kitchen', { locationOptions })
+          navigation.navigate('My Inventory', { locationOptions })
         }
       >
         <Text style={styles.buttonText}>Submit</Text>
