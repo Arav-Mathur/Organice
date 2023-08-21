@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button } from 'react-native';
+import { View, TextInput, Button, TouchableOpacity, Text } from 'react-native';
 
 const AddLocationsScreen = ({ navigation, route }) => {
     const [newLocation, setNewLocation] = useState('');
@@ -23,13 +23,16 @@ const AddLocationsScreen = ({ navigation, route }) => {
         value={newLocation}
         onChangeText={setNewLocation}
       />
-      <Button title="Add Location" onPress={handleAddLocation} />
-      <Button
-        title="Submit"
+      <TouchableOpacity onPress={handleAddLocation} >
+        <Text>Add Location</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
         onPress={() =>
           navigation.navigate('Kitchen', { locationOptions })
         }
-      />
+      >
+        <Text>Submit</Text>
+        </TouchableOpacity>
     </View>
   );
 };
