@@ -25,7 +25,7 @@ export default class Kitchen extends Component {
       name: '',
       measure: '',
       location: '',
-      locationOptions: ['Kitchen', 'Pantry', 'Fridge'], // Default options
+      locationOptions: ['Kitchen', 'Pantry', 'Fridge'],
       isModalVisible: false,
       docId: '',
       isDeleteVisible: false,
@@ -38,21 +38,35 @@ export default class Kitchen extends Component {
       qty: '',
       measure: '',
       location: '',
-      docId: '', // Reset the docId after updating the item
+      docId: '',
       isModalVisible: false,
     });
-    Items.getAllItems(); // Fetch all items again to reflect the update
+    this.getAllItems();
   };
-
+  getAllItems = async () => {
+    try {
+      const snapshot = await db.collection('Items').get();
+      const itemsData = snapshot.docs.map((doc) => ({
+        ...doc.data(),
+        docId: doc.id,
+      }));
+      this.setState({ allItems: itemsData });
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+  showModal = () => {
+    this.setState({ isModalVisible: true });
+  };
   componentDidMount() {
-    Items.getAllItems();
+    this.getAllItems();
   }
   updateLocationOptions = (newOptions) => {
     this.setState({ locationOptions: newOptions });
-  }
+  };
 
   render() {
-    console.log('allItems in render:', Items.state.allItems);
+    console.log(this.state.allItems);
     return (
       <View style={styles.container}>
         <Modal
@@ -89,11 +103,11 @@ export default class Kitchen extends Component {
               selectedValue={this.state.location}
               style={styles.formTextInput}
               onValueChange={(itemValue) => {
-                      this.setState({ location: itemValue });
-               }}>
+                this.setState({ location: itemValue });
+              }}>
               <Picker.Item label="Select Location" value="" />
               {this.state.locationOptions.map((location, index) => (
-             <Picker.Item label={location} value={location} key={index} />
+                <Picker.Item label={location} value={location} key={index} />
               ))}
             </Picker>
 
@@ -117,22 +131,20 @@ export default class Kitchen extends Component {
                         this.state.qty,
                         this.state.location,
                         this.state.measure
-                      ); // Update existing item
-                      this.clearItems()
-                      console.log(Items.state.allItems);
+                      );
+                      this.clearItems();
                     } else {
                       Items.addItems(
                         this.state.name,
                         this.state.qty,
                         this.state.location,
                         this.state.measure
-                      ); // Add new item
-                      this.clearItems()
+                      );
+                      this.clearItems();
                       console.log('additem');
-                      console.log(Items.state.allItems);
                     }
                     this.setState({ isModalVisible: false });
-                    //this.clearItems();
+
                     console.log('submit');
                   } else {
                     alert('All Fields Must Be Inputed');
@@ -156,67 +168,61 @@ export default class Kitchen extends Component {
                   Items.deleteItem(this.state.docId);
                   this.setState({
                     isModalVisible: false,
-                    isDeleteVisible: false, // Hide the delete button after deletion
+                    isDeleteVisible: false,
                   });
                   this.clearItems();
                 }}>
                 <Text style={{ color: 'white' }}>Delete</Text>
               </TouchableOpacity>
-              <TouchableOpacity 
+              <TouchableOpacity
                 onPress={() => {
                   navigation.navigate('AddLocations', {
-                  updateLocationOptions: this.updateLocationOptions,
-                  currentOptions: this.state.locationOptions,
+                    updateLocationOptions: this.updateLocationOptions,
+                    currentOptions: this.state.locationOptions,
                   });
-                }}>
-              </TouchableOpacity>
+                }}></TouchableOpacity>
             </View>
           </View>
         </Modal>
 
         <FlatList
-          data={Items.state.allItems}
-          keyExtractor={item => item.docId}
+          data={this.state.allItems}
+          keyExtractor={(item) => item.docId}
           renderItem={({ item, i }) => (
-            console.log(Items.state.allItems),
-            console.log(item),
-            (
-              <ListItem bottomDivider>
-                <ListItem.Content>
-                  <ListItem.Title
-                    style={{ color: 'black', fontWeight: 'bold' }}>
-                    {item.Name}
-                  </ListItem.Title>
-                  <View style={{ flexDirection: 'row' }}>
-                    <ListItem.Subtitle>{item.Qty + ' '}</ListItem.Subtitle>
-                    <ListItem.Subtitle>{item.Measure}</ListItem.Subtitle>
-                  </View>
-                </ListItem.Content>
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={() => {
-                    this.setState({
-                      name: item.Name,
-                      qty: item.Qty,
-                      measure: item.Measure,
-                      location: item.Location,
-                      docId: item.docId,
-                      isModalVisible: true,
-                      isDeleteVisible: true,
-                    });
-                  }}>
-                  <Text style={{ color: '#ffff' }}>View</Text>
-                </TouchableOpacity>
-              </ListItem>
-            )
+            <ListItem bottomDivider>
+              <ListItem.Content>
+                <ListItem.Title style={{ color: 'black', fontWeight: 'bold' }}>
+                  {item.Name}
+                </ListItem.Title>
+                <View style={{ flexDirection: 'row' }}>
+                  <ListItem.Subtitle>{item.Qty + ' '}</ListItem.Subtitle>
+                  <ListItem.Subtitle>{item.Measure}</ListItem.Subtitle>
+                </View>
+              </ListItem.Content>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => {
+                  this.setState({
+                    name: item.Name,
+                    qty: item.Qty,
+                    measure: item.Measure,
+                    location: item.Location,
+                    docId: item.docId,
+                    isModalVisible: true,
+                    isDeleteVisible: true,
+                  });
+                }}>
+                <Text style={{ color: '#ffff' }}>View</Text>
+              </TouchableOpacity>
+            </ListItem>
           )}
         />
 
         <View>
           <TouchableOpacity
             onPress={() => {
-              Items.showModal(), this.setState({ isDeleteVisible: false });
-              console.log("button pressed")
+              this.showModal(), this.setState({ isDeleteVisible: false });
+              console.log('button pressed');
             }}>
             <Text>+</Text>
           </TouchableOpacity>
@@ -328,7 +334,5 @@ const styles = StyleSheet.create({
       height: 8,
     },
   },
-  GoBackButton: {
-
-  },
+  
 });
