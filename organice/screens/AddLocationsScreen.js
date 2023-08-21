@@ -1,18 +1,26 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { View, TextInput, TouchableOpacity, Text, StyleSheet } from 'react-native';
 
 const AddLocationsScreen = ({ navigation, route }) => {
   const [newLocation, setNewLocation] = useState('');
   const [typedLocations, setTypedLocations] = useState([]);
 
   const handleAddLocation = () => {
+    // Check if a new location is provided
     if (newLocation) {
+      // Create a new array of options by adding the new location to the existing options
       const newOptions = [...route.params.currentOptions, newLocation];
+      
+      // Call the updateLocationOptions function passed from the previous screen
       route.params.updateLocationOptions(newOptions);
+      
+      // Update the typedLocations state with the new location
       setTypedLocations([...typedLocations, newLocation]);
+      
+      // Clear the newLocation input field
       setNewLocation('');
     }
-  };
+  };  
 
   return (
     <View>
@@ -24,13 +32,14 @@ const AddLocationsScreen = ({ navigation, route }) => {
       <TouchableOpacity style={styles.loginButton} onPress={handleAddLocation} >
         <Text style={styles.buttonText}>Add Location</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.signUpButton}
+      <TouchableOpacity
+        style={styles.signUpButton}
         onPress={() =>
-          navigation.navigate('My Inventory', { locationOptions })
+          navigation.goBack() // Assuming you want to go back after adding locations
         }
       >
-        <Text style={styles.buttonText}>Submit</Text>
-        </TouchableOpacity>
+        <Text style={styles.buttonText}>Go Back</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -61,7 +70,7 @@ const styles = StyleSheet.create({
     shadowOffset: {
       width: 0,
       height: 8,
-  },
+    },
   },
   signUpButton: {
     width: 352.5,
@@ -74,7 +83,7 @@ const styles = StyleSheet.create({
     shadowOffset: {
       width: 0,
       height: 8,
-  },
+    },
   },
   buttonText: {
     fontSize: 16,
@@ -82,5 +91,5 @@ const styles = StyleSheet.create({
     color: 'white',
     alignSelf: 'center',
     alignItems: 'center',
-  }
-  });
+  },
+});
