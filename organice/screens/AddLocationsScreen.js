@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, TouchableOpacity, Text } from 'react-native';
+import { View, TextInput, Button, TouchableOpacity, Text, StyleSheet } from 'react-native';
 
 const AddLocationsScreen = ({ navigation, route }) => {
     const [newLocation, setNewLocation] = useState('');
