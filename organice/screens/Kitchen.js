@@ -187,9 +187,19 @@ export default class Kitchen extends Component {
                 </Text>
               </TouchableOpacity>
             </View>
+          </View>        </Modal>
+        <View style={styles.searchBar}>
+        <TextInput 
+          style ={styles.bar}
+          placeholder = "Enter Book Id or Student Id"
+          onChangeText={(text)=>{this.setState({search:text})}}/>
+          <TouchableOpacity
+            style = {styles.searchButton}
+            onPress={()=>{this.searchTransactions(this.state.search)}}
+          >
+            <Text>Search</Text>
+          </TouchableOpacity>
           </View>
-        </Modal>
-          
         <FlatList
           data={this.state.allItems}
           keyExtractor={(item) => item.docId}
@@ -217,6 +227,7 @@ export default class Kitchen extends Component {
                     isModalVisible: true,
                     isDeleteVisible: true,
                   });
+                  console.log("being pressed")
                 }}>
                 <Text style={{ color: '#ffff' }}>View</Text>
               </TouchableOpacity>
