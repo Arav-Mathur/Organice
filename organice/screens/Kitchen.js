@@ -41,10 +41,10 @@ export default class Kitchen extends Component {
       docId: "",
       isModalVisible: false,
     });
-
-    this.getAllItems();
+    const { uid } = this.props.route.params;
+    this.getAllItems(uid);
   };
-  getAllItems = async () => {
+  getAllItems = async (uid) => {
     try {
       const snapshot = await db.collection(uid).get();
       const itemsData = snapshot.docs.map((doc) => ({
@@ -56,10 +56,10 @@ export default class Kitchen extends Component {
       console.error("Error fetching data:", error);
     }
   };
-  searchItems = async (item) => {
+  searchItems = async (uid,item) => {
     try {
       const search = await db
-        .collection("Items")
+        .collection(uid)
         .where("Name", "==", item)
         .get();
 
@@ -82,7 +82,6 @@ export default class Kitchen extends Component {
     this.setState({ locationOptions: newOptions });
   };
   componentDidMount() {
-    const { uid } = this.props.route.params;
     this.clearItems();
   }
   render() {
@@ -233,7 +232,7 @@ export default class Kitchen extends Component {
           <TouchableOpacity
             style={styles.searchButton}
             onPress={() => {
-              this.searchItems(this.state.search);
+              this.searchItems(uid,this.state.search);
             }}
           >
             <Text style={styles.registerButtonText}>Search</Text>
