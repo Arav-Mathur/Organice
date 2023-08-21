@@ -181,7 +181,9 @@ export default class Kitchen extends Component {
                     updateLocationOptions: this.updateLocationOptions,
                     currentOptions: this.state.locationOptions,
                   });
-                }}></TouchableOpacity>
+                }}> 
+                <Text>Add/Edit Locations</Text>
+                </TouchableOpacity>
             </View>
           </View>
         </Modal>

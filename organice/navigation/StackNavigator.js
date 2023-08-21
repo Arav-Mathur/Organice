@@ -14,6 +14,7 @@ function MyStack() {
       <Stack.Navigator initialRouteName="Login" >
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="My Inventory" component={MyTab} />
+        <Stack.Screen name="Add Locations" component={AddLocationScreen}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

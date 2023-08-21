@@ -66,7 +66,7 @@ export default class LoginScreen extends Component {
         await firebase.auth().createUserWithEmailAndPassword(email, password);
 
         // User is registered, you can also automatically log in the user if desired
-        this.props.navigation.replace("My Inventory");
+        this.props.navigation.replace("Add Locations");
       } catch (error) {
         console.error('Error:', error);
 
