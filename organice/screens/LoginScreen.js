@@ -24,13 +24,13 @@ export default class LoginScreen extends Component {
 
     try {
       await firebase.auth().signInWithEmailAndPassword(email, password);
+      const uid = firebase.auth().currentUser.uid;
 
       // User is authenticated, navigate to the Kitchen screen
       console.log('Login successful');
-      this.props.navigation.replace("My Inventory");
+      this.props.navigation.replace("My Inventory", { uid: uid });
     } catch (error) {
       console.error('Error:', error);
-
       if (
         error.code === 'auth/user-not-found' ||
         error.code === 'auth/wrong-password'

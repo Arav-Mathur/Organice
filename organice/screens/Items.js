@@ -22,8 +22,8 @@ class Items extends React.Component {
   }
 
 
-  updateItems = (docId, name, qty, location, measure) => {
-    db.collection('Items')
+  updateItems = (uid,docId, name, qty, location, measure) => {
+    db.collection(uid)
       .doc(docId)
       .update({
         Name: name,
@@ -35,8 +35,8 @@ class Items extends React.Component {
         console.error('Error updating item:', error);
       });
   };
-  addItems = (name, qty, location, measure) => {
-    db.collection('Items')
+  addItems = (uid,name, qty, location, measure) => {
+    db.collection(uid)
       .add({
         Name: name,
         Qty: qty,
@@ -49,8 +49,8 @@ class Items extends React.Component {
       });
   };
 
-  deleteItem = (docId) => {
-    db.collection('Items')
+  deleteItem = (uid,docId) => {
+    db.collection(uid)
       .doc(docId)
       .delete()
       .catch((error) => {

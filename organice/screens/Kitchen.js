@@ -46,7 +46,7 @@ export default class Kitchen extends Component {
   };
   getAllItems = async () => {
     try {
-      const snapshot = await db.collection("Items").get();
+      const snapshot = await db.collection(uid).get();
       const itemsData = snapshot.docs.map((doc) => ({
         ...doc.data(),
         docId: doc.id,
@@ -82,6 +82,7 @@ export default class Kitchen extends Component {
     this.setState({ locationOptions: newOptions });
   };
   componentDidMount() {
+    const { uid } = this.props.route.params;
     this.clearItems();
   }
   render() {
@@ -149,6 +150,7 @@ export default class Kitchen extends Component {
                     }
                     if (this.state.docId) {
                       Items.updateItems(
+                        uid,
                         this.state.docId,
                         this.state.name,
                         this.state.qty,
@@ -158,6 +160,7 @@ export default class Kitchen extends Component {
                       this.clearItems();
                     } else {
                       Items.addItems(
+                        uid,
                         this.state.name,
                         this.state.qty,
                         this.state.location,
@@ -191,7 +194,7 @@ export default class Kitchen extends Component {
                 style={styles.deleteButton}
                 visible={this.state.isDeleteVisible}
                 onPress={() => {
-                  Items.deleteItem(this.state.docId);
+                  Items.deleteItem(uid,this.state.docId);
                   this.setState({
                     isModalVisible: false,
                     isDeleteVisible: false,
