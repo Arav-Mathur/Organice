@@ -59,13 +59,13 @@ const AddLocationsScreen = ({ route }) => {
       </TouchableOpacity>
       <View style={styles.locationsContainer}>
         {locationOptions.map((location, index) => (
-          <Text key={index} style={styles.locationsButtonTextbuttonText}>
+          <Text key={index} style={styles.locationsButtonText}>
             {location}
           </Text>
         ))}
       </View>
       <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
-        <Text style={styles.ButtonText}>Next</Text>
+        <Text style={styles.buttonText}>Next</Text>
       </TouchableOpacity>
     </View>
   );
