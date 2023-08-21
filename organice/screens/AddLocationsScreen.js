@@ -25,7 +25,7 @@ const handleAddLocation = () => {
 };
 
   const handleNext = () => {
-    navigation.navigate("Kitchen");
+    navigation.navigate("My Inventory");
   };
 
 

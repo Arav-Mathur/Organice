@@ -189,7 +189,7 @@ export default class Kitchen extends Component {
             </View>
           </View>
         </Modal>
-
+          
         <FlatList
           data={this.state.allItems}
           keyExtractor={(item) => item.docId}
