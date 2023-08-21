@@ -175,6 +175,7 @@ export default class Kitchen extends Component {
                 <Text style={{ color: 'white' }}>Delete</Text>
               </TouchableOpacity>
               <TouchableOpacity
+              style={styles.deleteButton}
                 onPress={() => {
                   navigation.navigate('AddLocations', {
                     updateLocationOptions: this.updateLocationOptions,
