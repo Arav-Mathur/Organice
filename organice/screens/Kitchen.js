@@ -206,7 +206,7 @@ export default class Kitchen extends Component {
                     updateLocationOptions: this.updateLocationOptions,
                     currentOptions: this.state.locationOptions,
                   });
-                  this.setState({isModalVisible: true});
+                  this.setState({isModalVisible: false});
                 }}  
               >
                 <Text style={styles.registerButtonText}>
@@ -322,10 +322,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#ffff",
-    marginRight: 30,
-    marginLeft: 30,
-    marginTop: 80,
-    marginBottom: 80,
+    alignSelf: "center",
   },
   formTextInput: {
     width: "75%",
@@ -334,8 +331,6 @@ const styles = StyleSheet.create({
     borderColor: "#014f00",
     borderRadius: 10,
     borderWidth: 2,
-    marginTop: 20,
-    padding: 10,
   },
   registerButton: {
     width: "75%",
@@ -344,8 +339,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#8fb913",
     justifyContent: "center",
     borderRadius: 10,
-    marginTop: 20,
-    padding: 10,
     shadowColor: "#014f00",
     shadowOffset: {
       width: 0,
@@ -366,8 +359,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#8388A4",
     justifyContent: "center",
     borderRadius: 10,
-    marginTop: 20,
-    padding: 10,
     color: "#474B64",
     shadowColor: "#014f00",
     shadowOffset: {
@@ -402,8 +393,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#ff5722",
     justifyContent: "center",
     borderRadius: 10,
-    marginTop: 20,
-    padding: 10,
     shadowColor: "#014f00",
     shadowOffset: {
       width: 0,
