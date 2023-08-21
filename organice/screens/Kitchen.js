@@ -25,7 +25,7 @@ export default class Kitchen extends Component {
       name: '',
       measure: '',
       location: '',
-      locationOptions: ['Kitchen', 'Pantry', 'Fridge'],
+      locationOptions: ['Kitchen', 'Basement Pantry','Upstairs Pantry','Fridge', "Garage Fridge"],
       isModalVisible: false,
       docId: '',
       isDeleteVisible: false,
