@@ -58,6 +58,9 @@ export default class LoginScreen extends Component {
       const uid = authResult.user.uid;
       await firebase.firestore().collection(uid).add({
         // You can add initial data for the user's collection here if needed
+        docId: 1,
+        email: email,
+        uid: uid,
         locationOptions: this.state.locationOptions
       });
   
