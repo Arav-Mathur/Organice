@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { Component } from "react";
 import {
   Text,
   View,
@@ -8,61 +8,69 @@ import {
   Modal,
   TextInput,
   Alert,
-} from 'react-native';
-import Constants from 'expo-constants';
-import { ListItem } from '@rneui/themed';
-import { Picker } from '@react-native-picker/picker';
-import db from '../config';
-import Items from './Items'; // Make sure to import your Items file
+} from "react-native";
+import Constants from "expo-constants";
+import { ListItem } from "@rneui/themed";
+import { Picker } from "@react-native-picker/picker";
+import db from "../config";
+import Items from "./Items"; // Make sure to import your Items file
 
 export default class Kitchen extends Component {
   constructor() {
     super();
     this.state = {
       allItems: [],
-      qty: '',
-      name: '',
-      measure: '',
-      location: '',
-      locationOptions: ['Kitchen', 'Pantry', 'Fridge'],
+      qty: "",
+      name: "",
+      measure: "",
+      location: "",
+      locationOptions: ["Kitchen", "Pantry", "Fridge"],
       isModalVisible: false,
-      docId: '',
+      docId: "",
       isDeleteVisible: false,
+      search: "",
     };
     this.requestRef = null;
   }
   clearItems = () => {
     this.setState({
-      name: '',
-      qty: '',
-      measure: '',
-      location: '',
-      docId: '',
+      name: "",
+      qty: "",
+      measure: "",
+      location: "",
+      docId: "",
       isModalVisible: false,
     });
     this.getAllItems();
   };
   getAllItems = async () => {
     try {
-      const snapshot = await db.collection('Items').get();
+      const snapshot = await db.collection("Items").get();
       const itemsData = snapshot.docs.map((doc) => ({
         ...doc.data(),
         docId: doc.id,
       }));
       this.setState({ allItems: itemsData });
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error("Error fetching data:", error);
     }
   };
+  searchItems = async(item) =>{
+    var text = String(item).toUpperCase()
+    const search =  await db.collection("Items").where('Name','==',text).get()
+    this.setState({
+      allItems:[...this.state.allItems,doc.data()],
+  })
+  }
   showModal = () => {
     this.setState({ isModalVisible: true });
   };
+  updateLocationOptions = (newOptions) => {
+    this.setState({ locationOptions: newOptions });
+  };  
   componentDidMount() {
     this.clearItems();
   }
-  updateLocationOptions = (newOptions) => {
-    this.setState({ locationOptions: newOptions });
-  };
   render() {
     const { navigation } = this.props; // Get the navigation prop
 
@@ -71,7 +79,8 @@ export default class Kitchen extends Component {
         <Modal
           animationType="fade"
           transparent={true}
-          visible={this.state.isModalVisible}>
+          visible={this.state.isModalVisible}
+        >
           <View style={styles.modalContainer}>
             <TextInput
               style={styles.formTextInput}
@@ -103,7 +112,8 @@ export default class Kitchen extends Component {
               style={styles.formTextInput}
               onValueChange={(itemValue) => {
                 this.setState({ location: itemValue });
-              }}>
+              }}
+            >
               <Picker.Item label="Select Location" value="" />
               {this.state.locationOptions.map((location, index) => (
                 <Picker.Item label={location} value={location} key={index} />
@@ -115,12 +125,12 @@ export default class Kitchen extends Component {
                 style={styles.registerButton}
                 onPress={() => {
                   if (
-                    this.state.name != '' &&
-                    this.state.qty != '' &&
-                    this.state.measure != ''
+                    this.state.name != "" &&
+                    this.state.qty != "" &&
+                    this.state.measure != ""
                   ) {
                     if (Number(this.state.qty) <= 0) {
-                      Alert.alert('Quantity must be a positive number');
+                      Alert.alert("Quantity must be a positive number");
                       return;
                     }
                     if (this.state.docId) {
@@ -140,15 +150,16 @@ export default class Kitchen extends Component {
                         this.state.measure
                       );
                       this.clearItems();
-                      console.log('additem');
+                      console.log("additem");
                     }
                     this.setState({ isModalVisible: false });
 
-                    console.log('submit');
+                    console.log("submit");
                   } else {
-                    alert('All Fields Must Be Inputed');
+                    alert("All Fields Must Be Inputed");
                   }
-                }}>
+                }}
+              >
                 <Text style={styles.registerButtonText}>Submit</Text>
               </TouchableOpacity>
 
@@ -157,7 +168,8 @@ export default class Kitchen extends Component {
                 onPress={() => {
                   this.clearItems();
                   this.setState({ isModalVisible: false });
-                }}>
+                }}
+              >
                 <Text style={styles.cancelButtonText}>Cancel</Text>
               </TouchableOpacity>
 
@@ -171,46 +183,56 @@ export default class Kitchen extends Component {
                     isDeleteVisible: false,
                   });
                   this.clearItems();
-                }}>
-                <Text style={{ color: 'white' }}>Delete</Text>
+                }}
+              >
+                <Text style={{ color: "white" }}>Delete</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.registerButton}
                 onPress={() => {
-                  navigation.navigate('AddLocationsScreen', {
+                  navigation.navigate("AddLocationsScreen", {
                     updateLocationOptions: this.updateLocationOptions,
                     currentOptions: this.state.locationOptions,
                   });
-                }}>
+                }}
+              >
                 <Text style={styles.registerButtonText}>
                   Add/Edit Locations
                 </Text>
               </TouchableOpacity>
             </View>
-          </View>        </Modal>
+          </View>
+        </Modal>
+
         <View style={styles.searchBar}>
-        <TextInput 
-          style ={styles.bar}
-          placeholder = "Enter Book Id or Student Id"
-          onChangeText={(text)=>{this.setState({search:text})}}/>
+          <TextInput
+            style={styles.bar}
+            placeholder="Enter item"
+            onChangeText={(text) => {
+              this.setState({ search: text });
+            }}
+          />
           <TouchableOpacity
-            style = {styles.searchButton}
-            onPress={()=>{this.searchTransactions(this.state.search)}}
+            style={styles.searchButton}
+            onPress={() => {
+              this.searchItems(this.state.search);
+            }}
           >
             <Text>Search</Text>
           </TouchableOpacity>
-          </View>
+        </View>
+
         <FlatList
           data={this.state.allItems}
           keyExtractor={(item) => item.docId}
           renderItem={({ item, i }) => (
             <ListItem bottomDivider>
               <ListItem.Content>
-                <ListItem.Title style={{ color: 'black', fontWeight: 'bold' }}>
+                <ListItem.Title style={{ color: "black", fontWeight: "bold" }}>
                   {item.Name}
                 </ListItem.Title>
-                <View style={{ flexDirection: 'row' }}>
-                  <ListItem.Subtitle>{item.Qty + ' '}</ListItem.Subtitle>
+                <View style={{ flexDirection: "row" }}>
+                  <ListItem.Subtitle>{item.Qty + " "}</ListItem.Subtitle>
                   <ListItem.Subtitle>{item.Measure}</ListItem.Subtitle>
                 </View>
               </ListItem.Content>
@@ -227,9 +249,10 @@ export default class Kitchen extends Component {
                     isModalVisible: true,
                     isDeleteVisible: true,
                   });
-                  console.log("being pressed")
-                }}>
-                <Text style={{ color: '#ffff' }}>View</Text>
+                  console.log("being pressed");
+                }}
+              >
+                <Text style={{ color: "#ffff" }}>View</Text>
               </TouchableOpacity>
             </ListItem>
           )}
@@ -240,8 +263,9 @@ export default class Kitchen extends Component {
             onPress={() => {
               this.showModal(),
                 this.setState({ isDeleteVisible: false, isModalVisible: true });
-              console.log('button pressed');
-            }}>
+              console.log("button pressed");
+            }}
+          >
             <Text>+</Text>
           </TouchableOpacity>
         </View>
@@ -252,42 +276,63 @@ export default class Kitchen extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
     paddingTop: Constants.statusBarHeight,
-    backgroundColor: '#ecf0f1',
+    backgroundColor: "#ecf0f1",
     padding: 8,
+  },
+  searchBar: {
+    flexDirection: "row",
+    height: 40,
+    width: "auto",
+    borderWidth: 0.5,
+    alignItems: "center",
+  },
+  bar: {
+    borderWidth: 2,
+    height: 30,
+    width: 300,
+    paddingLeft: 10,
+  },
+  searchButton: {
+    borderWidth: 1,
+    height: 30,
+    width: 50,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "green",
   },
   modalContainer: {
     flex: 1,
     borderRadius: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#ffff',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#ffff",
     marginRight: 30,
     marginLeft: 30,
     marginTop: 80,
     marginBottom: 80,
   },
   formTextInput: {
-    width: '75%',
+    width: "75%",
     height: 35,
-    alignSelf: 'center',
-    borderColor: '#014f00',
+    alignSelf: "center",
+    borderColor: "#014f00",
     borderRadius: 10,
     borderWidth: 2,
     marginTop: 20,
     padding: 10,
   },
   registerButton: {
-    width: '75%',
+    width: "75%",
     height: 35,
-    alignSelf: 'center',
-    backgroundColor: '#8fb913',
-    justifyContent: 'center',
+    alignSelf: "center",
+    backgroundColor: "#8fb913",
+    justifyContent: "center",
     borderRadius: 10,
     marginTop: 20,
     padding: 10,
-    shadowColor: '#014f00',
+    shadowColor: "#014f00",
     shadowOffset: {
       width: 0,
       height: 8,
@@ -295,22 +340,22 @@ const styles = StyleSheet.create({
   },
   registerButtonText: {
     fontSize: 15,
-    fontWeight: 'bold',
-    color: 'white',
-    alignSelf: 'center',
-    alignItems: 'center',
+    fontWeight: "bold",
+    color: "white",
+    alignSelf: "center",
+    alignItems: "center",
   },
   cancelButton: {
-    width: '75%',
+    width: "75%",
     height: 35,
-    alignSelf: 'center',
-    backgroundColor: '#8388A4',
-    justifyContent: 'center',
+    alignSelf: "center",
+    backgroundColor: "#8388A4",
+    justifyContent: "center",
     borderRadius: 10,
     marginTop: 20,
     padding: 10,
-    color: '#474B64',
-    shadowColor: '#014f00',
+    color: "#474B64",
+    shadowColor: "#014f00",
     shadowOffset: {
       width: 0,
       height: 8,
@@ -318,18 +363,18 @@ const styles = StyleSheet.create({
   },
   cancelButtonText: {
     fontSize: 15,
-    fontWeight: 'bold',
-    color: 'white',
-    alignSelf: 'center',
-    alignItems: 'center',
+    fontWeight: "bold",
+    color: "white",
+    alignSelf: "center",
+    alignItems: "center",
   },
   button: {
     width: 100,
     height: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#8fb913',
-    shadowColor: '#014f00',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#8fb913",
+    shadowColor: "#014f00",
     shadowOffset: {
       width: 0,
       height: 8,
@@ -337,15 +382,15 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   deleteButton: {
-    width: '75%',
+    width: "75%",
     height: 35,
-    alignSelf: 'center',
-    backgroundColor: '#ff5722',
-    justifyContent: 'center',
+    alignSelf: "center",
+    backgroundColor: "#ff5722",
+    justifyContent: "center",
     borderRadius: 10,
     marginTop: 20,
     padding: 10,
-    shadowColor: '#014f00',
+    shadowColor: "#014f00",
     shadowOffset: {
       width: 0,
       height: 8,

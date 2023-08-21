@@ -57,7 +57,5 @@ class Items extends React.Component {
         console.error('Error deleting item:', error);
       });
   };
-
-
 }
 export default new Items();
