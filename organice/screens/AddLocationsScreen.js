@@ -2,10 +2,8 @@ import React, { useState } from 'react';
 import { View, TextInput, Button, TouchableOpacity, Text, StyleSheet } from 'react-native';
 
 const AddLocationsScreen = ({ navigation, route }) => {
-    const [newLocation, setNewLocation] = useState('');
-  const [locationOptions, setLocationOptions] = useState([
-    'Kitchen', 'Pantry', 'Fridge'
-  ]);
+  const [newLocation, setNewLocation] = useState('');
+  const [typedLocations, setTypedLocations] = useState([]);
 
   const handleAddLocation = () => {
     if (newLocation) {
@@ -26,7 +24,7 @@ const AddLocationsScreen = ({ navigation, route }) => {
       <TouchableOpacity style={styles.loginButton} onPress={handleAddLocation} >
         <Text style={styles.buttonText}>Add Location</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.loginButton}
+      <TouchableOpacity style={styles.signUpButton}
         onPress={() =>
           navigation.navigate('Kitchen', { locationOptions })
         }
