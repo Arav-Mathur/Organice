@@ -47,21 +47,26 @@ export default class LoginScreen extends Component {
       }
     }
   };
-
   handleSignUp = async () => {
     const { email, password } = this.state;
-
     try {
-      await firebase.auth().createUserWithEmailAndPassword(email, password);
-
+      // Create the user in Firebase Authentication
+      const authResult = await firebase.auth().createUserWithEmailAndPassword(email, password);
+      // Create a new collection in Firestore with user's UID as identifier
+      const uid = authResult.user.uid;
+      await firebase.firestore().collection('users').doc(uid).set({
+        email: email,
+        // You can add more user-related data here if needed
+      });
+  
       // Navigate to AddLocationsScreen and pass parameters
       this.props.navigation.replace('AddLocationsScreen', {
-        updateLocationOptions: this.updateLocationOptions, // Use the function
+        updateLocationOptions: this.updateLocationOptions,
         currentOptions: this.state.locationOptions,
       });
     } catch (error) {
       console.error('Error:', error);
-
+  
       if (error.code === 'auth/email-already-in-use') {
         Alert.alert(
           'Sign Up Failed',
