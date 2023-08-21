@@ -86,6 +86,7 @@ componentDidMount() {
 
 
   render() {
+    const { navigation } = this.props;
     return (
       <View style={styles.container}>
         <Modal
