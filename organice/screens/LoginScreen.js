@@ -49,14 +49,16 @@ export default class LoginScreen extends Component {
   };
   handleSignUp = async () => {
     const { email, password } = this.state;
+  
     try {
       // Create the user in Firebase Authentication
       const authResult = await firebase.auth().createUserWithEmailAndPassword(email, password);
-      // Create a new collection in Firestore with user's UID as identifier
+  
+      // Create a new top-level collection with user's UID as its name
       const uid = authResult.user.uid;
-      await firebase.firestore().collection('users').doc(uid).set({
-        email: email,
-        // You can add more user-related data here if needed
+      await firebase.firestore().collection(uid).add({
+        // You can add initial data for the user's collection here if needed
+        locationOptions: this.state.locationOptions
       });
   
       // Navigate to AddLocationsScreen and pass parameters
@@ -80,6 +82,7 @@ export default class LoginScreen extends Component {
       }
     }
   };
+  
 
   updateLocationOptions = (newOptions) => {
     this.setState({ locationOptions: newOptions });
