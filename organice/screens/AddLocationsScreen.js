@@ -17,10 +17,11 @@ const handleAddLocation = () => {
     Alert.alert('Duplicate Location', 'This location already exists.');
   } else {
     const newOptions = [...currentOptions, newLocation];
+    console.log('New options before update:', newOptions);
     route.params?.updateLocationOptions(newOptions);
     setNewLocation('');
     Alert.alert('Location Added', 'The new location has been added successfully.');
-
+      console.log(updateLocationOptions)
   }
 };
 
