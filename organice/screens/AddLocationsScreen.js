@@ -24,7 +24,10 @@ const AddLocationsScreen = ({ route }) => {
       console.log("No currentOptions found."); // Debugging
       return;
     }
-
+    console.log("Current options before update:", currentOptions);
+    updateLocationOptions(newOptions); // Use the function
+    console.log("Current options after update:", newOptions);
+    
     if (currentOptions.includes(newLocation)) {
       // Alert or handle duplicate location
       Alert.alert("Duplicate Location", "This location already exists.");

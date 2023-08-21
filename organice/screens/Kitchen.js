@@ -84,6 +84,12 @@ componentDidMount() {
     this.clearItems();
 }
 
+componentDidUpdate(prevProps, prevState) {
+  if (prevState.locationOptions !== this.state.locationOptions) {
+    // Update the Picker options with the new locationOptions
+    this.setState({ locationOptions: this.state.locationOptions });
+  }
+}
 
   render() {
     const { navigation } = this.props;
