@@ -56,14 +56,24 @@ export default class Kitchen extends Component {
       console.error("Error fetching data:", error);
     }
   };
-  searchItems = async(item) =>{
-    var text = String(item).toUpperCase()
-    const search = await db.collection("Items").where('Name', '==', text).get();
-    console.log(search)
-    search.forEach((doc) => {
-      console.log(doc.id, "=>", doc.data()); // Print the document ID and data
-    });
-  }
+  searchItems = async (item) => {
+    try {
+      const search = await db
+        .collection('Items')
+        .where('Name', '==', item)
+        .get();
+        
+      const searchData = search.docs.map((doc) => ({
+        ...doc.data(),
+        docId: doc.id,
+      }));
+      
+      this.setState({ allItems: searchData });
+    } catch (error) {
+      console.error('Error searching data:', error);
+    }
+  };
+  
   showModal = () => {
     this.setState({ isModalVisible: true });
   };
@@ -196,7 +206,8 @@ export default class Kitchen extends Component {
                     updateLocationOptions: this.updateLocationOptions,
                     currentOptions: this.state.locationOptions,
                   });
-                }}
+                  this.setState({isModalVisible: true});
+                }}  
               >
                 <Text style={styles.registerButtonText}>
                   Add/Edit Locations
@@ -265,7 +276,8 @@ export default class Kitchen extends Component {
             onPress={() => {
               this.showModal(),
                 this.setState({ isDeleteVisible: false, isModalVisible: true });
-              console.log("button pressed");
+                console.log(this.state.isModalVisible);
+
             }}
           >
             <Text>+</Text>
