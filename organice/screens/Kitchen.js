@@ -16,7 +16,6 @@ import { Picker } from '@react-native-picker/picker';
 import db from '../config';
 import Items from './Items';
 
-
 export default class Kitchen extends Component {
   constructor(props) {
     super(props);
@@ -103,6 +102,7 @@ componentDidUpdate(prevProps, prevState) {
           visible={this.state.isModalVisible}>
           <View style={styles.modalContainer}>
             <Text style={styles.modalText}>Edit Item</Text>
+            <Image source={require("organice/logo.jpeg")}/>
             <TextInput
               style={styles.formTextInput}
               placeholder="Item Name"
@@ -289,7 +289,8 @@ componentDidUpdate(prevProps, prevState) {
         this.setState({ isDeleteVisible: false, isModalVisible: true });
       console.log(this.state.isModalVisible);
     }}>
-    <Text>+</Text>
+    {/* <Text>+</Text> */}
+    <ion-icon name="add-circle"></ion-icon>
   </TouchableOpacity>
 </View>
 </View>

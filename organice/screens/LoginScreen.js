@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Text,
   TextInput,
+  Image
 } from 'react-native';
 import * as firebase from 'firebase';
 
@@ -91,6 +92,7 @@ handleLogin = async () => {
   render() {
     return (
       <View style={styles.container}>
+        <Image source={require("organice/logo.jpeg")}/>
         <TextInput
           style={styles.input}
           placeholder="Email"
