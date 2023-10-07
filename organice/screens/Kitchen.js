@@ -303,15 +303,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#ecf0f1',
     padding: 8,
   },
-  // modalContainer: {
-  //   flex: 1,
-  //   borderRadius: 20,
-  //   justifyContent: 'center',
-  //   alignItems: 'center',
-  //   backgroundColor: '#ffff',
-  //   marginHorizontal: Dimensions.get('window').width * 0.05,
-  //   marginVertical: Dimensions.get('window').height * 0.2,
-  // },
   modalContainer: {
   flex: 1,
   justifyContent: 'center',
