@@ -92,7 +92,7 @@ handleLogin = async () => {
   render() {
     return (
       <View style={styles.container}>
-        <Image source={require("organice/logo.jpeg")}/>
+        {/* <Image source={require("organice/logo.jpeg")}/> */}
         <TextInput
           style={styles.input}
           placeholder="Email"
