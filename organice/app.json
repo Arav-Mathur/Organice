@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "organice",
-    "slug": "snack-38cfde40-47dd-4981-92cf-d8712b2cb92f",
+    "slug": "organice",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -18,7 +18,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "organice1"
     },
     "android": {
       "adaptiveIcon": {
@@ -28,6 +29,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "044954ed-6122-47d6-b91c-4b4f19b1d32b"
+      }
+    },
+    "owner": "arav_mathur"
   }
 }

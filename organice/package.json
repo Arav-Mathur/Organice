@@ -7,19 +7,21 @@
     "web": "expo start --web"
   },
   "dependencies": {
-    "firebase": "^8.10.1",
+    "@expo/vector-icons": "^13.0.0",
+    "@react-native-picker/picker": "2.4.8",
+    "@react-navigation/material-bottom-tabs": "*",
+    "@react-navigation/native": "6.0.0",
+    "@react-navigation/stack": "*",
     "@rneui/base": "4.0.0-rc.7",
     "@rneui/themed": "*",
+    "exo": "^0.0.9",
+    "expo": "^49.0.13",
     "expo-constants": "~14.0.2",
-    "@expo/vector-icons": "^13.0.0",
-    "react-native-paper": "4.12.5",
-    "react-native-screens": "~3.18.0",
-    "@react-navigation/stack": "*",
-    "@react-navigation/native": "6.0.0",
-    "@react-native-picker/picker": "2.4.8",
+    "firebase": "^8.10.1",
     "react-native-gesture-handler": "~2.8.0",
+    "react-native-paper": "4.12.5",
     "react-native-safe-area-context": "4.4.1",
-    "@react-navigation/material-bottom-tabs": "*"
+    "react-native-screens": "~3.18.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"
