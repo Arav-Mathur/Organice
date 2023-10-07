@@ -8,7 +8,7 @@ import {
   Modal,
   TextInput,
   Alert,
-  Dimensions,
+  Dimensions
 } from 'react-native';
 import Constants from 'expo-constants';
 import { ListItem } from '@rneui/themed';
@@ -103,7 +103,6 @@ componentDidUpdate(prevProps, prevState) {
           visible={this.state.isModalVisible}>
           <View style={styles.modalContainer}>
             <Text style={styles.modalText}>Edit Item</Text>
-            {/* <Image source={require("organice/logo.jpeg")}/> */}
             <TextInput
               style={styles.formTextInput}
               placeholder="Item Name"
@@ -291,7 +290,6 @@ componentDidUpdate(prevProps, prevState) {
       console.log(this.state.isModalVisible);
     }}>
     <Text>+</Text>
-    {/* <ion-icon name="add-circle"></ion-icon> */}
   </TouchableOpacity>
 </View>
 </View>
