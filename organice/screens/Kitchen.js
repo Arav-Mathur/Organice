@@ -8,7 +8,6 @@ import {
   Modal,
   TextInput,
   Alert,
-  Dimensions
 } from 'react-native';
 import Constants from 'expo-constants';
 import { ListItem } from '@rneui/themed';
@@ -204,7 +203,7 @@ componentDidUpdate(prevProps, prevState) {
                   });
                   this.clearItems();
                 }}>
-                <Text style={styles.registerButtonText}>Delete</Text>
+                <Text style={{ color: 'white' }}>Delete</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.registerButton}
