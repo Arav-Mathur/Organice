@@ -14,8 +14,7 @@ import Constants from 'expo-constants';
 import { ListItem } from '@rneui/themed';
 import { Picker } from '@react-native-picker/picker';
 import db from '../config';
-import Items from './Items';
-
+import Items from './Items'; 
 
 export default class Kitchen extends Component {
   constructor(props) {
@@ -34,7 +33,7 @@ export default class Kitchen extends Component {
       uid: this.props.route.params?.uid
     };
     this.requestRef = null;
-  }
+  };
 
   clearItems = () => {
     this.setState({
